@@ -1,12 +1,12 @@
 import GlobalChat from '../components/GlobalChat';
+import { NavLink } from 'react-router-dom';
 
 import '../assets/css/home.css';
 
 import avatarImg from '../assets/images/icon_profile.png';
+import { useEffect } from 'react';
 
-function Home() {
-
-    const username = "Joueur_Alpha";
+function Home({ user }) {
     
     return (
     <main className="home-main">
@@ -17,13 +17,13 @@ function Home() {
         </p>
       </section>
       <section className='home-profile'>
-        <span className='home-player-name'>{username}</span>
+        <span className='home-player-name'>{user?.name || "Non connecté"}</span>
         <img className="avatar" src={avatarImg} alt="Avatar" />
-        <button className='home-btn'>
+        <NavLink to="/lobby" className='home-btn'>
           Jouer en ligne
-        </button>
+        </NavLink>
       </section>
-      <GlobalChat />
+      <GlobalChat user={user} />
       <section className='no-name'>
         <p>en construction</p>
       </section>
