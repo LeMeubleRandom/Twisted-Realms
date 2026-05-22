@@ -4,7 +4,7 @@ import pool from "../db/mysql.js";
 class User {
     static async createUser(name, email, password, role = 'user') {
         const [result] = await pool.execute(
-            "INSERT INTO user (name, email, password, role, postDate) VALUES (?, ?, ?, ?, UTC_TIMESTAMP())",
+            "INSERT INTO user (name, email, password, role, date) VALUES (?, ?, ?, ?, UTC_TIMESTAMP())",
             [name, email, password, role]
         )
         return result;
@@ -39,6 +39,14 @@ class User {
         const [[user]] = await pool.execute(
             'SELECT * FROM user WHERE id = ?',
             [userId]
+        );
+        return user;
+    }
+
+    static async updateUserProfile(name, userImage, userId) {
+        const [user] = await pool.execute(
+            "UPDATE user SET name = ?, userImage = ? WHERE id = ?",
+            [name, userImage, userId]
         );
         return user;
     }

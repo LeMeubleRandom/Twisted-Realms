@@ -50,7 +50,10 @@ class UserService {
             user: {
                 id: user.id,
                 name: user.name,
-                role: user.role
+                userImage: user.userImage,
+                role: user.role,
+                date: user.date,
+                isGlobalChat: user.isGlobalChat
             }
         };
     }

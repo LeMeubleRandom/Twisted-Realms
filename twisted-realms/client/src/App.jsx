@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 //Import des pages
 import Home from './views/Home';
@@ -35,6 +36,7 @@ function AppContent() {
       const data = await response.json();
       if (data.status === "success") {
           setUser(data.user);
+          //console.log(data.user);
       }
     } 
     
@@ -50,18 +52,39 @@ function AppContent() {
   useEffect(() => {
     fetchUser();
   }, []);
+  
+  if (isLoading) {
+    return <div>Chargement de l'application...</div>;
+  }
 
   return (
     <>
       <Header user={user} />
       <Routes>
-        <Route path="/" element={<Home user={user} />} />
-        <Route path='/login' element={<Login setUser={setUser} />} />
-        <Route path='/register' element={<Register setUser={setUser} />} />
-        <Route path='/shop' element={<Shop />} />
-        <Route path='/collection' element={<Collection />} />
-        <Route path='/profile' element={<Profile />} />
-        <Route path='/lobby' element={<Lobby />} />
+        <Route 
+            path="/" element={<Home user={user} />} 
+        />
+        <Route 
+            path="/login" 
+            element={user ? <Navigate to="/" replace /> : <Login setUser={setUser} />} 
+        />
+        <Route 
+            path="/register" 
+            element={user ? <Navigate to="/" replace /> : <Register />} 
+        />        
+        <Route 
+            path='/shop' element={<Shop />} 
+        />
+        <Route 
+            path='/collection' element={<Collection />} 
+        />
+        <Route 
+            path="/profile" 
+            element={user ? <Profile user={user} setUser={setUser} fetchUser={fetchUser} /> : <Navigate to="/login" replace />} 
+        />
+        <Route 
+            path='/lobby' element={<Lobby user={user}/>} 
+        />
       </Routes>
     </>
   )

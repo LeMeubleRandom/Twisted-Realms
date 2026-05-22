@@ -15,6 +15,11 @@ function GlobalChat({ user }) {
     const handleSendMessage = async (e) => {
       e.preventDefault();
 
+      if (!user) {
+        alert("Veuillez vous connectez pour accéder au chat");
+        return;
+      }
+
       if (messageText.trim() === "") return;
 
       const messageData = {
