@@ -17,26 +17,20 @@ function Register({ setUser }) {
         e.preventDefault();
         setError(null);
 
-        console.log("test");
-
         try{
-            console.log("test2");
             const response = await fetch('/api/user/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, email, password }),
                 credentials: 'include'
             });
-            console.log("test3");
 
             if (response.ok) {
                 console.log("test de réponse");
-                const userData = await response.json();
-                setUser(userData);
-                navigate('/');
+                navigate('/login');
             } else {
                 const errorData = await response.json();
-                setError(errorData.message || "Erreur lors de la connexion");
+                setError(errorData.message || "Erreur lors de l'inscription");
             }
         }
         catch(error) {

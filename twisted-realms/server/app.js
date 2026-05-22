@@ -14,6 +14,9 @@ import redisClient from './db/redis.js';
 import messageRouter from './router/MessageRouter.js';
 import userRouter from './router/UserRouter.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const app = express();
 const server = createServer(app)
 const corsOptions = {
@@ -33,6 +36,7 @@ app.disable('x-powered-by');
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
+app.use('/user-images', express.static(join(__dirname, '../public/user-images')));
 
 app.use((req, res, next) => {
   console.log("Requête reçue sur le backend :", req.url);
