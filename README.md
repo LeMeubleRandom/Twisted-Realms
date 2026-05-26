@@ -1,5 +1,7 @@
 Projet Choisi : Projet 0 - Application libre
 
+cd d/documents/proj/perso/personal-project-end-of-year/twisted-realms
+
 ## Présentation du projet
 
 Ce projet consiste en la création d'une application web de jeu de cartes à collectionner (TCG) originale, entièrement jouable via un navigateur. À l'instar de plateformes comme Dueling Nexus ou Dueling Book, l'application permet aux utilisateurs de construire des decks et d'affronter d'autres joueurs
