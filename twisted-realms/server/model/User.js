@@ -4,9 +4,18 @@ import pool from "../db/mysql.js";
 export default class User {
   static async createUser(name, email, password, role = "user") {
     const [result] = await pool.execute(
-      "INSERT INTO user (name, email, password, role, date) VALUES (?, ?, ?, ?, UTC_TIMESTAMP())",
+      "INSERT INTO user (name, email, password, role, createdAt) VALUES (?, ?, ?, ?, UTC_TIMESTAMP())",
       [name, email, password, role],
     );
+    return result;
+  }
+
+  static async deleteUser(userId) {
+    await pool.execute("DELETE FROM deck WHERE userId = ?", [userId]);
+    await pool.execute("DELETE FROM userCollection WHERE userId = ?", [userId]);
+    const [result] = await pool.execute("DELETE FROM user WHERE id = ?", [
+      userId,
+    ]);
     return result;
   }
 
@@ -56,10 +65,53 @@ export default class User {
     return user;
   }
 
-  static async findDeckByUserId(userId) {
+  static async findDecksByUserId(userId) {
     const [decks] = await pool.execute("SELECT * FROM deck WHERE userId = ?", [
       userId,
     ]);
     return decks;
+  }
+
+  static async createCollection(userId) {
+    const [collection] = await pool.execute(
+      "INSERT INTO userCollection (userId) VALUES (?)",
+      [userId],
+    );
+    return collection;
+  }
+
+  static async createDeck(userId, name) {
+    const [deck] = await pool.execute(
+      "INSERT INTO deck (userId, name, postDate) VALUES (?, ?, UTC_TIMESTAMP())",
+      [userId, name],
+    );
+    return deck;
+  }
+
+  static async updateDeck(id, name, cardList, mainCard) {
+    const [deck] = await pool.execute(
+      "UPDATE deck SET name = ?, cardList = ?, mainDeck = ? WHERE id = ?",
+      [name, cardList, mainCard, id],
+    );
+    return deck;
+  }
+
+  static async getDeck(id) {
+    const [[deck]] = await pool.execute("SELECT * FROM deck WHERE id = ?", [
+      id,
+    ]);
+    return deck;
+  }
+
+  static async deleteDeck(id) {
+    const [deck] = await pool.execute("DELETE FROM deck WHERE id = ?", [id]);
+  }
+
+  static async getCollection(id) {
+    const [[collection]] = await pool.execute(
+      "SELECT * FROM userCollection WHERE userId = ?",
+      [id],
+    );
+    return collection;
   }
 }

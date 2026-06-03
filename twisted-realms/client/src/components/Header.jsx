@@ -44,6 +44,16 @@ function Header({ user }) {
           </li>
           <li>
             <NavLink
+              to="/decks"
+              className={({ isActive }) =>
+                isActive ? "nav-item active" : "nav-item"
+              }
+            >
+              Mes Decks
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
               to={user ? "/profile" : "/login"}
               className={({ isActive }) =>
                 isActive ? "nav-item active" : "nav-item"
@@ -55,7 +65,9 @@ function Header({ user }) {
         </ul>
 
         <div className="navbar-profile">
-          <span>{user?.name || "Non connecté"}</span>
+          <NavLink to={user ? "/profile" : "/login"}>
+            {user?.name || "Non connecté"}
+          </NavLink>
         </div>
       </nav>
     </header>

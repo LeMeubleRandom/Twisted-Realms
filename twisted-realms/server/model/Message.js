@@ -18,7 +18,7 @@ export default class Message {
     static async getAllMessages() {
         const [rows] = await pool.execute(`
             SELECT m.id, m.message, m.postDate,
-            COALESCE(u.name , 'deletedUser') AS name
+            COALESCE(u.name , 'utilisateur introuvable') AS name
             FROM message m
             LEFT JOIN user u ON m.userId = u.id
             ORDER BY m.postDate ASC

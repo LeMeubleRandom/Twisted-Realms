@@ -21,7 +21,7 @@ const Card = ({ card }) => {
   return (
     <div className={`card-container ${factionClass}`}>
       <div className="image">
-        <img src={avatarImg} alt="" />
+        <img src={avatarImg} alt="" draggable="false" />
         <div className="card-name">{cardStats.name}</div>
         <div className="card-attribute">
           <span>{cardStats.faction.toUpperCase()}</span>:
