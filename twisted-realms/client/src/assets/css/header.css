@@ -56,12 +56,15 @@ header {
   color: var(--text);
 }
 
-/* Le Profil à droite */
 .navbar-profile {
   display: flex;
   justify-content: end;
   color: var(--text);
-  width: 5rem;
+  width: 10rem;
+}
+
+.navbar-profile a {
+  color: inherit;
 }
 
 /* Non utilisé */

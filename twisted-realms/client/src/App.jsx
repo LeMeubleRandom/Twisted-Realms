@@ -16,6 +16,7 @@ import Profile from "./views/Profile";
 import Login from "./views/Login";
 import Register from "./views/Register";
 import Game from "./views/Game";
+import Decks from "./views/Decks";
 
 import NotFound from "./views/NotFound";
 
@@ -76,7 +77,7 @@ function AppContent() {
           element={user ? <Navigate to="/" replace /> : <Register />}
         />
         <Route path="/shop" element={<Shop />} />
-        <Route path="/collection" element={<Collection />} />
+        <Route path="/collection" element={<Collection user={user} />} />
         <Route
           path="/profile"
           element={
@@ -87,6 +88,7 @@ function AppContent() {
             )
           }
         />
+        <Route path="/decks" element={<Decks user={user} />} />
         <Route path="/lobby" element={<Game user={user} />} />
         <Route path="/card" element={<Card user={user} />} />
         <Route path="/.." element={<NotFound />} />

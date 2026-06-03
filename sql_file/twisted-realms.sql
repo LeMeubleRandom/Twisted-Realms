@@ -34,7 +34,7 @@ CREATE TABLE `user` (
   `password` varchar(255) DEFAULT NULL,
   `userImage` varchar(510) DEFAULT NULL,
   `role` varchar(255) DEFAULT NULL,
-  `date` datetime NOT NULL,
+  `createdAt` datetime NOT NULL,
   `isGlobalChat` BOOLEAN DEFAULT TRUE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -42,7 +42,7 @@ CREATE TABLE `user` (
 -- Déchargement des données de la table `users`
 --
 
-INSERT INTO `user` (`id`, `name`, `email`, `password`, `userImage`, `role`, `date`, `isGlobalChat`) VALUES
+INSERT INTO `user` (`id`, `name`, `email`, `password`, `userImage`, `role`, `createdAt`, `isGlobalChat`) VALUES
 (2, 'Jamie', 'antoinedbc2005@gmail.com', '$2b$10$9m2pcJFV8a83mSBq56wElO/gq3XU7Ydubg7BdyAAlk/DTwCBfIhIG', '1779741525599-931313353.webp', 'user', '2026-05-22 07:56:49', 1),
 (3, 'Sofiane', 'test@gmail.com', '$2b$10$/rRdJccmpBZWH762zZFWHuXhTG0B9emTAjRtR1v3he1ZcXCr7abWW', '1779440163457-795085330.jpeg', 'user', '2026-05-22 08:55:27', 1),
 (4, 'JsuisVieux', 'jeremygirard89100@gmail.com', '$2b$10$cxPLcSQz.JC1LNBntb9.0.tNAFA46ZH3fDd3uMo6LcQEC.W8I/OKW', '1779442514076-829402163.jpg', 'user', '2026-05-22 09:34:30', 1),
@@ -58,15 +58,16 @@ CREATE TABLE `deck` (
   `id` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `name` VARCHAR(100) NOT NULL,
-  `cardList` JSON NOT NULL,
-  `createdAt` datetime NOT NULL
+  `cardList` JSON DEFAULT ('[]'),
+  `mainCard` int(11) DEFAULT NULL,
+  `postDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `deck`
 --
 
-INSERT INTO `deck` (`id`, `userId`, `name`, `cardList`, `createdAt`) VALUES
+INSERT INTO `deck` (`id`, `userId`, `name`, `cardList`, `postDate`) VALUES
 (1, 2, 'Deck Arcanique', '[35, 31, 38, 32, 40, 33, 37, 35, 39, 34, 36, 31, 32, 38, 40, 33, 36, 37, 39, 34, 35, 31, 38, 32, 40, 33, 37, 39, 34, 36]', '2026-05-31 12:00:00');
 
 -- --------------------------------------------------------
@@ -162,13 +163,20 @@ INSERT INTO `card` (`id`, `name`, `faction`, `type`, `atk`, `PV`, `effect`, `cos
 CREATE TABLE `userCollection` (
   `id` int(11) NOT NULL,
   `userId` int(11) DEFAULT NULL,
-  `cardId` int(11) DEFAULT NULL,
-  `quantity` int(11) DEFAULT NULL
+  `cardCollection` JSON DEFAULT ('[]'),
+  `quantity` JSON DEFAULT ('[]'),
+  `favorite` JSON DEFAULT ('[]')
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `collection`
 --
+
+INSERT INTO `userCollection` (`id`, `userId`, `cardCollection`, `quantity`, `favorite`) VALUES
+(1, 2, '[1, 3, 5, 8, 12, 15, 20]', '[2, 1, 3, 2, 1, 3, 2]', '[]'),
+(2, 3, '[]', '[]', '[]'),
+(3, 4, '[]', '[]', '[]'),
+(4, 5, '[]', '[]', '[]');
 
 -- --------------------------------------------------------
 

@@ -1,14 +1,128 @@
 .collection-container {
   display: flex;
   margin: 3rem;
+  gap: 3rem;
 }
 
 .cards-container {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
+  flex-grow: 1;
 }
 
 .filtre {
-  flex-grow: 1;
+  width: 18rem;
+  height: fit-content;
+  background-color: var(--nav-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid var(--accent-active);
+  color: var(--text);
+  position: sticky;
+  top: 9rem;
+  align-self: flex-start;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.filter-group h3 {
+  margin: 0;
+  border-bottom: 1px solid var(--accent-active);
+  padding-bottom: 0.5rem;
+  color: var(--secondary);
+}
+
+.filter-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.filter-label input {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: var(--bg);
+  border: 2px solid var(--accent-active);
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.4s ease;
+}
+
+.filter-label input:hover {
+  border-color: var(--secondary);
+  box-shadow: 0 0 6px rgba(0, 242, 254, 0.2);
+}
+
+.filter-label input:checked {
+  background-color: var(--secondary);
+  border-color: var(--secondary);
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
+}
+
+.filter-label input:checked::after {
+  content: "✓";
+  color: var(--bg);
+  font-size: 0.95rem;
+  font-weight: bold;
+}
+
+.card-wrapper.locked {
+  filter: grayscale(100%) brightness(0.6);
+  opacity: 0.4;
+  transition: all 0.3s ease;
+}
+
+.card-wrapper {
+  position: relative;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  width: fit-content;
+}
+
+.card-quantity-badge {
+  position: absolute;
+  top: -0.5rem;
+  left: -1.3rem;
+  background-color: var(--secondary);
+  color: var(--bg);
+  border: 2px solid var(--accent-active);
+  font-weight: bold;
+  padding: 0.5rem 0.7rem;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.card-container {
+  cursor: pointer;
+}
+
+.card-container:hover {
+  transform: none !important;
+}
+
+.card-wrapper:not(.locked):hover {
+  transform: scale(1.05);
+  z-index: 2;
+}
+
+.card-wrapper:active,
+.card-wrapper:not(.locked):active {
+  transform: scale(0.95);
+  z-index: 2;
 }

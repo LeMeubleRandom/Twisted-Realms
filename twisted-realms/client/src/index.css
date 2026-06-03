@@ -29,6 +29,8 @@ body,
   scrollbar-width: none;
   display: flex;
   flex-direction: column;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 main {

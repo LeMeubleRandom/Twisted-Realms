@@ -4,10 +4,22 @@
   --bg-dark-color: rgb(45, 5, 5);
   --accent-color: white;
 
-  border: 5px solid var(--border-color);
-  background-color: var(--bg-color);
+  border: 6px solid transparent;
+  background-image:
+    linear-gradient(var(--bg-color), var(--bg-color)),
+    linear-gradient(
+      135deg,
+      #1f1f1f 0%,
+      #5c5c5c 25%,
+      #282828 50%,
+      #707070 75%,
+      #242424 100%
+    );
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+
   color: var(--accent-color);
-  border-radius: 3px;
+  border-radius: 5px;
   width: 12rem;
   height: 18rem;
   place-self: center;
@@ -19,17 +31,18 @@
     transform 0.3s ease,
     box-shadow 0.3s ease;
   transform-origin: center;
+  user-select: none;
+  -webkit-user-select: none;
+  box-shadow: inset 0px 0px 15px 0px var(--bg-dark-color);
 }
 
 .card-container:hover {
   transform: scale(1.05);
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
   z-index: 2;
 }
 
 .card-container:active {
   transform: scale(0.95);
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
   z-index: 2;
 }
 
@@ -59,6 +72,8 @@
 
 .image img {
   width: 100%;
+  pointer-events: none;
+  -webkit-user-drag: none;
 }
 
 .card-attribute {
