@@ -7,7 +7,8 @@ import "../assets/css/accountForm.css";
 
 function AccountForm({ user, setUser, fetchUser }) {
   const navigate = useNavigate();
-  const serverUrl = `http://${window.location.hostname}:5000/user-images/`;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || `http://${window.location.hostname}:5000`;
+  const serverUrl = `${backendUrl.replace(/\/$/, "")}/user-images/`;
 
   const actualImage = user?.userImage
     ? `${serverUrl}${user.userImage}`

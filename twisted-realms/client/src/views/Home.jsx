@@ -8,7 +8,8 @@ import avatarImg from "../assets/images/black_skull_dragon__rush_duel___artwork_
 import { useState, useEffect, useMemo } from "react";
 
 function Home({ user }) {
-  const serverUrl = `http://${window.location.hostname}:5000/user-images/`;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || `http://${window.location.hostname}:5000`;
+  const serverUrl = `${backendUrl.replace(/\/$/, "")}/user-images/`;
 
   const actualImage = user?.userImage
     ? `${serverUrl}${user.userImage}`
