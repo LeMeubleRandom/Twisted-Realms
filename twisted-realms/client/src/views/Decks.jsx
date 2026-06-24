@@ -1,5 +1,5 @@
 import { NavLink, Navigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 import "../assets/css/decks.css";
 import Card from "../components/Card";
@@ -17,9 +17,51 @@ function Decks({ user }) {
 
   const [showOnlyOwned, setShowOnlyOwned] = useState([]);
 
+  const [incompletedDeck, setIncompDeck] = useState(null);
+  const [missingCard, setMissingCard] = useState(null);
+
   if (!user) {
     return <Navigate to="/login" replace />;
   }
+
+  const verifyQuantity = (decks, owned) => {
+    console.log(decks);
+    console.log(owned);
+    const missing = {};
+    const missing2 = {};
+
+    decks.forEach((deck) => {
+      const deckCards = Array.isArray(deck.cardList)
+        ? deck.cardList
+        : typeof deck.cardList === "string"
+          ? JSON.parse(deck.cardList)
+          : [];
+
+      const counts = {};
+      deckCards.forEach((id) => {
+        counts[id] = (counts[id] || 0) + 1;
+      });
+      console.log(deckCards.length);
+      let isMissing = false;
+      for (const id of Object.keys(counts)) {
+        const required = counts[id];
+        const has = owned[id] || 0;
+        if (has < required) {
+          isMissing = true;
+          break;
+        }
+      }
+      if (isMissing) {
+        missing[deck.id] = "Cartes manquantes";
+      }
+
+      if (deckCards.length != 30)
+        missing2[deck.id] = "Nombre de cartes insuffisant";
+    });
+
+    setMissingCard(missing);
+    setIncompDeck(missing2);
+  };
 
   const fetchCards = async (e) => {
     try {
@@ -100,20 +142,6 @@ function Decks({ user }) {
     }
   };
 
-  useEffect(() => {
-    fetchCards();
-    fetchCollection();
-    fetchUserDecks();
-  }, []);
-
-  useEffect(() => {
-    if (deckList.length == 0) {
-      console.log("Cet utilisateur n'a aucun deck enregistré");
-    } else {
-      fetchcardsByDeck(deckList[0]);
-    }
-  }, [deckList]);
-
   const getOwnedCards = () => {
     const row = userCollection;
     if (!row) return {};
@@ -140,7 +168,7 @@ function Decks({ user }) {
     }
   };
 
-  const ownedCards = getOwnedCards();
+  const ownedCards = useMemo(() => getOwnedCards(), [userCollection]);
 
   const visibleCards = showOnlyOwned
     ? cardList.filter((c) => ownedCards[c.id] > 0)
@@ -179,6 +207,24 @@ function Decks({ user }) {
     setIsEdit(true);
   };
 
+  useEffect(() => {
+    fetchCards();
+    fetchCollection();
+    fetchUserDecks();
+  }, []);
+
+  useEffect(() => {
+    verifyQuantity(deckList, ownedCards);
+  }, [deckList, ownedCards]);
+
+  useEffect(() => {
+    if (deckList.length == 0) {
+      console.log("Cet utilisateur n'a aucun deck enregistré");
+    } else {
+      fetchcardsByDeck(deckList[0]);
+    }
+  }, [deckList]);
+
   return (
     <main>
       {isEdit && (
@@ -186,9 +232,10 @@ function Decks({ user }) {
           user={user}
           activeDeck={activeDeck}
           cardList={cardList}
-          userCollection={userCollection}
+          userCollection={ownedCards}
           setIsEdit={setIsEdit}
           fetchUserDecks={fetchUserDecks}
+          favoriteList={userCollection.favorite}
         />
       )}
       {!isEdit && (
@@ -214,6 +261,12 @@ function Decks({ user }) {
               >
                 <h2>{c.name}</h2>
                 {targetCard && <Card card={targetCard} isMini={false} />}
+                {missingCard[c.id] && (
+                  <div className="error">{missingCard[c.id]}</div>
+                )}
+                {incompletedDeck && (
+                  <div className="error">{incompletedDeck[c.id]}</div>
+                )}
               </div>
             );
           })}

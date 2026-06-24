@@ -2,10 +2,10 @@
 import pool from "../db/mysql.js";
 
 export default class User {
-  static async createUser(name, email, password, role = "user") {
+  static async createUser(name, email, password, image, role = "user") {
     const [result] = await pool.execute(
-      "INSERT INTO user (name, email, password, role, createdAt) VALUES (?, ?, ?, ?, UTC_TIMESTAMP())",
-      [name, email, password, role],
+      "INSERT INTO user (name, email, password, userImage, role, createdAt) VALUES (?, ?, ?, ?, ?, UTC_TIMESTAMP())",
+      [name, email, password, image, role],
     );
     return result;
   }

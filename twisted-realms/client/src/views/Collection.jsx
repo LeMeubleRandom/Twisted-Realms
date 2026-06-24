@@ -146,6 +146,7 @@ function Collection({ user }) {
           {filteredCollection.map((c) => {
             const qty = ownedCards[c.id] || 0;
             const isOwned = qty > 0;
+            console.log(isOwned);
             return (
               <div
                 key={c.id}

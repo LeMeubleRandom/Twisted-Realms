@@ -13,6 +13,7 @@ const DeckView = ({
   userCollection,
   setIsEdit,
   fetchUserDecks,
+  favoriteList,
 }) => {
   const [deckName, setDeckName] = useState(activeDeck?.name || "Nouveau Deck");
   const [currentCardList, setCurrentCardList] = useState([]);
@@ -83,14 +84,14 @@ const DeckView = ({
     }
 
     const currentCountInDeck = deckCardCounts[cardId] || 0;
-    const ownedQuantity = ownedCards[cardId] || 0;
+    const ownedQuantity = userCollection[cardId] || 0;
 
-    if (currentCountInDeck >= ownedQuantity) {
+    /*if (currentCountInDeck >= ownedQuantity) {
       setErrorMessage(
         "Vous n'avez pas d'autres exemplaires de cette carte dans votre collection.",
       );
       return;
-    }
+    }*/
 
     if (currentCountInDeck >= 3) {
       setErrorMessage(
@@ -117,6 +118,7 @@ const DeckView = ({
     const newList = [...currentCardList];
     newList.splice(index, 1);
     setCurrentCardList(newList);
+    console.log(newList);
 
     if (currentMainCard === cardId) {
       const remainingCount = newList.filter((id) => id === cardId).length;
@@ -172,8 +174,41 @@ const DeckView = ({
     }
   };
 
+  const handleDeleteDeck = async () => {
+    const confirmDelete = window.confirm(
+      "Voulez-vous vraiment supprimer ce deck ?",
+    );
+    if (!confirmDelete) return;
+
+    setErrorMessage("");
+
+    try {
+      const response = await fetch("/api/user/deck/delete", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: activeDeck.id,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP : ${response.status}`);
+      }
+
+      await fetchUserDecks();
+      setIsEdit(false);
+    } catch (err) {
+      console.error(err);
+      setErrorMessage(
+        "Une erreur est survenue lors de la suppression du deck.",
+      );
+    }
+  };
+
   const sortDeck = useMemo(() => {
-    return currentCardList
+    const sorted = currentCardList
       .map((id) => cardList.find((card) => card.id === id))
       .filter((card) => card !== undefined)
       .sort(
@@ -182,24 +217,24 @@ const DeckView = ({
           a.cost - b.cost ||
           a.name.localeCompare(b.name),
       );
-  }, [cardList, currentCardList]);
+
+    const renderedCounts = {};
+    return sorted.map((card) => {
+      renderedCounts[card.id] = (renderedCounts[card.id] || 0) + 1;
+      const isOwned = (userCollection[card.id] || 0) >= renderedCounts[card.id];
+      return { card, isOwned };
+    });
+  }, [cardList, currentCardList, userCollection]);
 
   const filteredCollection = useMemo(() => {
     return cardList
       .filter((card) => {
-        const cards = Array.isArray(userCollection.cardCollection)
-          ? userCollection.cardCollection
-          : JSON.parse(userCollection.cardCollection);
-        const quantities = Array.isArray(userCollection.quantity)
-          ? userCollection.quantity
-          : JSON.parse(userCollection.quantity);
-
         if (showOnlyOwned) {
-          const isOwned = (cards[card.id] || 0) > 0;
+          const isOwned = (userCollection[card.id] || 0) > 0;
           if (!isOwned) return false;
         }
         if (showOnlyFav) {
-          const isFav = quantities.includes(card.id);
+          const isFav = favoriteList.includes(card.id);
           if (!isFav) return false;
         }
 
@@ -249,24 +284,46 @@ const DeckView = ({
       }}
     >
       <div className="deck-view-container">
-        <label htmlFor="deck-name"></label>
-        <input
-          type="text"
-          id="deck-name"
-          placeholder="Nom du deck"
-          value={deckName}
-          onChange={(e) => setDeckName(e.target.value)}
-        />
+        <div className="deck-head-container">
+          <div>
+            <label htmlFor="deck-name"></label>
+            <input
+              type="text"
+              id="deck-name"
+              placeholder="Nom du deck"
+              value={deckName}
+              onChange={(e) => setDeckName(e.target.value)}
+            />
+          </div>
+          <div className="deck-head-actions">
+            <button className="deck-delete-btn" onClick={handleDeleteDeck}>
+              Supprimer
+            </button>
+            <button
+              className="deck-save-btn"
+              onClick={handleSaveDeck}
+              disabled={isSaving}
+            >
+              {isSaving ? "Enregistrement..." : "Enregistrer"}
+            </button>
+          </div>
+        </div>
+        {errorMessage && (
+          <div className="deck-error-message">{errorMessage}</div>
+        )}
         <div>
           <div className="deck-cards">
-            {sortDeck.map((card, index) => {
+            {sortDeck.map(({ card, isOwned }, index) => {
               return (
-                <Card
-                  card={card}
-                  className="deck-card"
-                  isMini={false}
+                <div
+                  className={`deck-card-container ${isOwned ? "owned" : "locked"}`}
                   key={index}
-                />
+                  onClick={(e) => {
+                    setCurrentMainCard(card.id);
+                  }}
+                >
+                  <Card card={card} className="deck-card" isMini={false} />
+                </div>
               );
             })}
           </div>
@@ -300,12 +357,17 @@ const DeckView = ({
               </div>
               <div className="deck-filter-cards-container">
                 {filteredCollection.map((c, index) => {
-                  const qty = ownedCards[c.id] || 0;
+                  const qty = userCollection[c.id] || 0;
                   const isOwned = qty > 0;
+                  console.log(isOwned);
                   const key = `${index}-filtered-card`;
                   return (
                     <div className="filter-unique-card-container" key={key}>
-                      <Card card={c} isMini={true} />
+                      <div
+                        className={`filtered-card-view ${isOwned ? "owned" : "locked"}`}
+                      >
+                        <Card card={c} isMini={true} />
+                      </div>
                       <div className="filter-unique-card-description">
                         <div className="filter-unique-card-attribut">
                           <div className="filter-unique-card-info">
@@ -352,7 +414,6 @@ const DeckView = ({
                               className="unique-card-btn-action plus"
                               onClick={() => handleAddCard(c.id)}
                               disabled={
-                                (deckCardCounts[c.id] || 0) >= qty ||
                                 (deckCardCounts[c.id] || 0) >= 3 ||
                                 currentCardList.length >= 30
                               }

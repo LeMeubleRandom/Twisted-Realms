@@ -8,6 +8,13 @@
   gap: 1rem;
 }
 
+.deck-head-container {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  justify-content: space-between;
+}
+
 .deck-cards {
   max-height: 80vh;
   overflow-y: auto;
@@ -35,11 +42,12 @@
 
 .deck-side-container {
   width: 100%;
-  height: 75vh;
+  height: 73vh;
   background-color: var(--nav-bg);
   border: 1px solid var(--accent-active);
   border-radius: 12px;
   padding: 1.5rem;
+  padding-bottom: 0.5rem;
   color: var(--text);
   position: sticky;
   top: 12rem;
@@ -60,7 +68,7 @@
 .deck-filter-container {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
   flex: 1;
   min-height: 0;
 }
@@ -201,6 +209,13 @@
   align-items: center;
 }
 
+.deck-card-container.locked,
+.filtered-card-view.locked {
+  filter: grayscale(100%) brightness(0.6);
+  opacity: 0.4;
+  transition: all 0.3s ease;
+}
+
 #deck-name {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -208,7 +223,6 @@
   color: var(--text);
   font-size: 1.6rem;
   margin: 2rem 2rem 1rem 2rem;
-  width: 100%;
   max-width: 20rem;
   box-sizing: border-box;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -277,4 +291,62 @@
   color: var(--text);
   min-width: 1.5rem;
   text-align: center;
+}
+
+.deck-head-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-self: center;
+  margin: 2rem 2rem 1rem 2rem;
+}
+
+.deck-save-btn,
+.deck-delete-btn {
+  padding: 0.5rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+}
+
+.deck-save-btn {
+  background: rgba(0, 242, 254, 0.1);
+  border: 1px solid var(--secondary);
+  color: var(--secondary);
+}
+
+.deck-save-btn:hover:not(:disabled) {
+  background: var(--secondary);
+  color: var(--bg);
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+}
+
+.deck-save-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: var(--accent-active);
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.deck-delete-btn {
+  background: rgba(255, 71, 87, 0.1);
+  border: 1px solid var(--primary-nemesis);
+  color: var(--primary-nemesis);
+}
+
+.deck-delete-btn:hover {
+  background: var(--primary-nemesis);
+  color: var(--bg);
+  box-shadow: 0 0 15px rgba(255, 71, 87, 0.4);
+}
+
+.deck-error-message {
+  color: #ff4d4d;
+  font-weight: bold;
+  margin: 0 2rem 1rem 2rem;
+  font-size: 1rem;
 }

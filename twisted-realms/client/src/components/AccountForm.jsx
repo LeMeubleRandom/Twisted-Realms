@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import avatarImg from "../assets/images/black_skull_dragon__rush_duel___artwork__by_nhociory_difdumv.png";
 
@@ -13,11 +14,15 @@ function AccountForm({ user, setUser, fetchUser }) {
     : avatarImg;
 
   const [image, setImage] = useState(actualImage);
+  const [defaultImages, setDefaultImages] = useState(null);
+  const [selectedDefaultImage, setSelectedDefaultImage] = useState(null);
   const [oldImage, setOldImage] = useState(actualImage);
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
   const [selectedFile, setSelectedFile] = useState(null);
   const [error, setError] = useState(null);
+
+  const [showDefaultImage, setDefaultImage] = useState(false);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -26,7 +31,12 @@ function AccountForm({ user, setUser, fetchUser }) {
       const imageUrl = URL.createObjectURL(file);
       setImage(imageUrl);
       setSelectedFile(file);
+      setSelectedDefaultImage(null);
     }
+  };
+
+  const handleShowDefault = (e) => {
+    setDefaultImage(true);
   };
 
   const updateUserProfile = async (e) => {
@@ -37,6 +47,9 @@ function AccountForm({ user, setUser, fetchUser }) {
     formData.append("name", name);
     if (selectedFile) {
       formData.append("image", selectedFile);
+      formData.append("oldImage", oldImage);
+    } else if (selectedDefaultImage) {
+      formData.append("defaultImage", selectedDefaultImage);
       formData.append("oldImage", oldImage);
     }
 
@@ -50,6 +63,7 @@ function AccountForm({ user, setUser, fetchUser }) {
 
       if (response.ok) {
         fetchUser();
+        window.confirm("Informations mises à jour");
       } else {
         console.error("Erreur lors de la mise à jour du profil");
       }
@@ -78,6 +92,7 @@ function AccountForm({ user, setUser, fetchUser }) {
 
       if (response.ok) {
         fetchUser();
+        window.confirm("Informations mises à jour");
       } else {
         console.error("Erreur lors de la mise à jour du profil");
       }
@@ -111,6 +126,20 @@ function AccountForm({ user, setUser, fetchUser }) {
     }
   };
 
+  useEffect(() => {
+    const modules = import.meta.glob(
+      "../public/default-images/*.{png,jpg,jpeg,svg}",
+    );
+
+    const imgPaths = Object.keys(modules).map((chemin) => {
+      return chemin;
+    });
+
+    console.log(imgPaths);
+
+    setDefaultImages(imgPaths);
+  }, []);
+
   return (
     <article className="tab-content">
       <div className="tab-header">
@@ -137,8 +166,18 @@ function AccountForm({ user, setUser, fetchUser }) {
               Ce nom sera visible par les autres utilisateurs
             </small>
           </div>
-          <div>
+          <div className="form-group">
             <span>Image de Profil</span>
+            <small className="form-help">
+              Cliquez sur l'image pour personnaliser votre profil{" "}
+            </small>
+            <button
+              type="button"
+              className="btn-image-choice"
+              onClick={handleShowDefault}
+            >
+              Images par défaut
+            </button>
             <label htmlFor="image" className="profile-placeholder-image">
               <img className="profile-image" src={image} alt="Aperçu avatar" />
             </label>
@@ -191,6 +230,49 @@ function AccountForm({ user, setUser, fetchUser }) {
           </button>
         </div>
       </section>
+      {showDefaultImage &&
+        defaultImages &&
+        createPortal(
+          <div
+            className="default-image-modal-overlay"
+            onClick={() => setDefaultImage(false)}
+          >
+            <div
+              className="default-image-view"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3>Sélectionnez un avatar</h3>
+              <div className="default-image-grid">
+                {defaultImages.map((chemin) => {
+                  const filename = chemin.split("/").pop();
+                  const displayUrl = `/default-images/${filename}`;
+                  return (
+                    <img
+                      key={chemin}
+                      src={displayUrl}
+                      alt={filename}
+                      className="default-image-option"
+                      onClick={() => {
+                        setImage(displayUrl);
+                        setSelectedDefaultImage(filename);
+                        setSelectedFile(null);
+                        setDefaultImage(false);
+                      }}
+                    />
+                  );
+                })}
+              </div>
+              <button
+                type="button"
+                className="btn-close-modal"
+                onClick={() => setDefaultImage(false)}
+              >
+                Fermer
+              </button>
+            </div>
+          </div>,
+          document.body,
+        )}
     </article>
   );
 }
