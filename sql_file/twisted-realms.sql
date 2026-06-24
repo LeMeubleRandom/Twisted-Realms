@@ -46,7 +46,8 @@ INSERT INTO `user` (`id`, `name`, `email`, `password`, `userImage`, `role`, `cre
 (2, 'Jamie', 'antoinedbc2005@gmail.com', '$2b$10$9m2pcJFV8a83mSBq56wElO/gq3XU7Ydubg7BdyAAlk/DTwCBfIhIG', '1779741525599-931313353.webp', 'user', '2026-05-22 07:56:49', 1),
 (3, 'Sofiane', 'test@gmail.com', '$2b$10$/rRdJccmpBZWH762zZFWHuXhTG0B9emTAjRtR1v3he1ZcXCr7abWW', '1779440163457-795085330.jpeg', 'user', '2026-05-22 08:55:27', 1),
 (4, 'JsuisVieux', 'jeremygirard89100@gmail.com', '$2b$10$cxPLcSQz.JC1LNBntb9.0.tNAFA46ZH3fDd3uMo6LcQEC.W8I/OKW', '1779442514076-829402163.jpg', 'user', '2026-05-22 09:34:30', 1),
-(5, 'boris', 'boris.rose.dev@gmail.com', '$2b$10$3F0PauDwP8K0YHcYFQ3areGGylWunMmhLsfINv915WHxHutlgu8xS', '1779442889677-543814697.jpeg', 'user', '2026-05-22 09:39:58', 1);
+(5, 'boris', 'boris.rose.dev@gmail.com', '$2b$10$3F0PauDwP8K0YHcYFQ3areGGylWunMmhLsfINv915WHxHutlgu8xS', '1779442889677-543814697.jpeg', 'user', '2026-05-22 09:39:58', 1),
+(6, 'Meuble', 'antoindbc2005@gmail.com', '$2b$10$9m2pcJFV8a83mSBq56wElO/gq3XU7Ydubg7BdyAAlk/DTwCBfIhIG', '1779741525599-931313353.webp', 'user', '2026-05-22 07:56:49', 1);
 
 -- --------------------------------------------------------
 
@@ -70,7 +71,6 @@ CREATE TABLE `deck` (
 INSERT INTO `deck` (`id`, `userId`, `name`, `cardList`, `postDate`) VALUES
 (1, 2, 'Deck Arcanique', '[35, 31, 38, 32, 40, 33, 37, 35, 39, 34, 36, 31, 32, 38, 40, 33, 36, 37, 39, 34, 35, 31, 38, 32, 40, 33, 37, 39, 34, 36]', '2026-05-31 12:00:00'),
 (2, 2, 'Deck Draconique', '[12, 15, 11, 19, 14, 16, 20, 13, 18, 17, 11, 12, 15, 13, 16, 14, 19, 20, 17, 18, 15, 11, 16, 12, 19, 13, 20, 14, 18, 17]', '2026-06-11 12:00:00');
-
 
 -- --------------------------------------------------------
 
@@ -174,10 +174,11 @@ CREATE TABLE `userCollection` (
 --
 
 INSERT INTO `userCollection` (`id`, `userId`, `cardCollection`, `quantity`, `favorite`) VALUES
-(1, 2, '[1, 3, 5, 8, 12, 15, 20]', '[2, 1, 3, 2, 1, 3, 2]', '[]'),
-(2, 3, '[]', '[]', '[]'),
+(1, 2, '[1, 3, 5, 8, 12, 15, 20, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]', '[2, 1, 3, 2, 1, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3]', '[41]'),
+(2, 3, '[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]', '[3, 3, 3, 3, 3, 3, 3, 3, 3, 3]', '[1]'),
 (3, 4, '[]', '[]', '[]'),
-(4, 5, '[]', '[]', '[]');
+(4, 5, '[]', '[]', '[]'),
+(5, 6, '[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]', '[3, 3, 3, 3, 3, 3, 3, 3, 3, 3]', '[1]');
 
 -- --------------------------------------------------------
 

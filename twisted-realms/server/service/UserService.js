@@ -1,6 +1,12 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../model/User.js";
+import fs from "fs";
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 class UserService {
   static async registerUser(name, email, password) {
@@ -18,12 +24,22 @@ class UserService {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const result = await User.createUser(name, email, hashedPassword);
+    // Sélection d'une image par défaut aléatoire
+    const randomImage = await this.randUserImage();
+    const userImage = await this.copyDefaultImage(randomImage);
+
+    const result = await User.createUser(
+      name,
+      email,
+      hashedPassword,
+      userImage,
+    );
 
     return {
       id: result.insertId,
       name: name,
       email: email,
+      userImage: userImage,
     };
   }
 
@@ -76,7 +92,11 @@ class UserService {
     const cleanFileName = fileName.split("/").pop().split("\\").pop();
     console.log(cleanFileName);
 
-    const filePath = join(__dirname, "../../client/public/user-images", cleanFileName);
+    const filePath = path.join(
+      __dirname,
+      "../../client/src/public/user-images",
+      cleanFileName,
+    );
     console.log(filePath);
 
     try {
@@ -84,6 +104,51 @@ class UserService {
       console.log("Ancienne image supprimée avec succès");
     } catch (err) {
       console.error("Erreur lors de la suppression de l'ancienne image:", err);
+    }
+  }
+
+  static async copyDefaultImage(fileName) {
+    if (!fileName) return null;
+    try {
+      const defaultPath = path.join(
+        __dirname,
+        "../../client/src/public/default-images",
+        fileName,
+      );
+      const uniqueName = `default-${Date.now()}-${Math.floor(Math.random() * 1000000)}${path.extname(fileName)}`;
+      const userImagesPath = path.join(
+        __dirname,
+        "../../client/src/public/user-images",
+        uniqueName,
+      );
+
+      await fs.promises.mkdir(path.dirname(userImagesPath), {
+        recursive: true,
+      });
+      await fs.promises.copyFile(defaultPath, userImagesPath);
+      return uniqueName;
+    } catch (err) {
+      console.error("Erreur lors de la copie de l'image par défaut :", err);
+      return null;
+    }
+  }
+
+  static async randUserImage() {
+    console.log("rand");
+    try {
+      const cheminDossier = path.join(
+        __dirname,
+        "../../client/src/public/default-images",
+      );
+
+      const fichiers = fs.readdirSync(cheminDossier);
+      console.log(`fichiers :`, fichiers);
+
+      if (fichiers.length === 0) return null;
+      const randomIdx = Math.floor(Math.random() * fichiers.length);
+      return fichiers[randomIdx];
+    } catch (erreur) {
+      console.error("Impossible de lire le dossier", erreur);
     }
   }
 }

@@ -110,11 +110,30 @@ export default class UserController {
 
   static async updateUserProfile(req, res) {
     try {
-      const { name } = req.body;
-      const { oldImage } = req.body;
-      const imageFileName = req.file ? req.file.filename : null;
-      console.log(name);
-      console.log(oldImage);
+      const { name, oldImage, defaultImage } = req.body;
+      const currentUser = await User.findById(req.userId);
+      if (!currentUser) {
+        return res
+          .status(404)
+          .json({ status: "error", message: "Utilisateur introuvable." });
+      }
+
+      let imageFileName = currentUser.userImage;
+      let shouldDeleteOldImage = false;
+
+      if (req.file) {
+        imageFileName = req.file.filename;
+        shouldDeleteOldImage = true;
+      } else if (defaultImage) {
+        // Strip folder prefix if it's sent as default-images/filename.png
+        const plainFileName = defaultImage.split("/").pop().split("\\").pop();
+        imageFileName = await UserService.copyDefaultImage(plainFileName);
+        shouldDeleteOldImage = true;
+      }
+
+      console.log("Name:", name);
+      console.log("Old Image:", oldImage);
+      console.log("New Image File:", imageFileName);
 
       const updatedUser = await User.updateUserProfile(
         name,
@@ -128,7 +147,9 @@ export default class UserController {
           .json({ status: "error", message: "Aucune donnée à mettre à jour." });
       }
 
-      await UserService.deleteUserImage(oldImage);
+      if (shouldDeleteOldImage && oldImage) {
+        await UserService.deleteUserImage(oldImage);
+      }
 
       res.status(200).json({
         status: "success",
@@ -219,8 +240,8 @@ export default class UserController {
 
   static async deleteDeck(req, res) {
     try {
-      const deckId = req.body;
-      const response = await User.deleteDeck(deckId);
+      const { id } = req.body;
+      const response = await User.deleteDeck(id);
 
       res.status(200).json(response);
     } catch (error) {
