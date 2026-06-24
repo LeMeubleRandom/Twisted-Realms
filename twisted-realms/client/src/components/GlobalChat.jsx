@@ -3,9 +3,12 @@ import { useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 import { NavLink, useNavigate } from "react-router-dom";
 
-const socket = io(`http://${window.location.hostname}:5000`, {
-  withCredentials: true,
-});
+const socket = io(
+  import.meta.env.VITE_BACKEND_URL || `http://${window.location.hostname}:5000`,
+  {
+    withCredentials: true,
+  },
+);
 
 function GlobalChat({ user }) {
   const [messageText, setMessageText] = useState("");

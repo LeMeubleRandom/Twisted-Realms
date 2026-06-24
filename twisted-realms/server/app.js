@@ -19,7 +19,11 @@ import cardRouter from "./router/CardRouter.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const allowedOrigins = ["http://localhost:5173", "http://10.45.31.81:5173"];
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://10.45.31.81:5173",
+  process.env.CLIENT_URL,
+].filter(Boolean);
 
 const app = express();
 const server = createServer(app);
