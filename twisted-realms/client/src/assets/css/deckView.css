@@ -474,5 +474,18 @@
     width: 100%;
     box-sizing: border-box;
   }
-}
 
+  .deck-cards {
+    grid-template-columns: repeat(auto-fill, minmax(6rem, 1fr));
+  }
+
+  .deck-card-container {
+    zoom: 0.5;
+  }
+
+  .deck-sidebar-toggle {
+    position: fixed;
+    right: 0;
+    left: auto;
+  }
+}
