@@ -76,7 +76,7 @@ function AppContent() {
           path="/register"
           element={user ? <Navigate to="/" replace /> : <Register />}
         />
-        <Route path="/shop" element={<Shop />} />
+        <Route path="/shop" element={<Shop user={user} />} />
         <Route path="/collection" element={<Collection user={user} />} />
         <Route
           path="/profile"

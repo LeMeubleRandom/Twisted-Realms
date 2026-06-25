@@ -111,3 +111,8 @@ coût
 aucun
 accélérateur de puissance
 1
+
+-- -----------------------------------------------------------------------------
+
+1000 un deck entier
+100 pour le lot de 3 cartes
