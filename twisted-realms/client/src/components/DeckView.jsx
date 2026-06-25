@@ -29,6 +29,11 @@ const DeckView = ({
 
   const [errorMessage, setErrorMessage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
 
   useEffect(() => {
     const deckCards = Array.isArray(activeDeck.cardList)
@@ -311,7 +316,13 @@ const DeckView = ({
         {errorMessage && (
           <div className="deck-error-message">{errorMessage}</div>
         )}
-        <div>
+        <div className="deck-main-layout">
+          {isSidebarOpen && (
+            <div
+              className="deck-sidebar-overlay"
+              onClick={() => setIsSidebarOpen(false)}
+            />
+          )}
           <div className="deck-cards">
             {sortDeck.map(({ card, isOwned }, index) => {
               return (
@@ -327,7 +338,30 @@ const DeckView = ({
               );
             })}
           </div>
-          <div className="deck-side-container">
+          <div className={`deck-side-container ${isSidebarOpen ? "open" : ""}`}>
+            <button
+              className="deck-sidebar-toggle"
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              aria-label={isSidebarOpen ? "Fermer les filtres" : "Ouvrir les filtres"}
+            >
+              <svg
+                className={`toggle-arrow ${isSidebarOpen ? "open" : ""}`}
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                {isSidebarOpen ? (
+                  <polyline points="9 5 16 12 9 19"></polyline>
+                ) : (
+                  <polyline points="15 5 8 12 15 19"></polyline>
+                )}
+              </svg>
+            </button>
             <h3>Filtres</h3>
             <div className="deck-filter-container">
               <div className="deck-label-container">

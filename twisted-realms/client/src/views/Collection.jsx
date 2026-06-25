@@ -16,9 +16,9 @@ function Collection({ user }) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isFactionDropdownOpen, setIsFactionDropdownOpen] = useState(false);
 
-  /*if (!user) {
+  if (!user) {
     return <Navigate to="/login" replace />;
-  }*/
+  }
 
   const fetchCards = async (e) => {
     try {
