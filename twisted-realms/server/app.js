@@ -15,6 +15,7 @@ import messageRouter from "./router/MessageRouter.js";
 import userRouter from "./router/UserRouter.js";
 import gameRouter from "./router/GameRouter.js";
 import cardRouter from "./router/CardRouter.js";
+import shopRouter from "./router/ShopRouter.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -58,6 +59,7 @@ app.use("/message", messageRouter);
 app.use("/user", userRouter);
 app.use("/game", gameRouter);
 app.use("/card", cardRouter);
+app.use("/shop", shopRouter);
 
 app.get("/", (req, res) => {
   res.send("Serveur Node.js opérationnel");
