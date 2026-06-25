@@ -34,41 +34,87 @@ function Shop({ user }) {
       },
       {
         id: "p2",
-        name: "Booster: Élite des Érudis",
+        name: "Booster: Héritage Kasmigena",
         price: 100,
-        description: "Contient 5 cartes de la faction Érudis.",
+        description: "Contient 5 cartes de la faction Kasmigenas.",
         type: "Booster",
       },
       {
         id: "p3",
-        name: "Booster: Anomalie Mutante",
+        name: "Booster: Mutation Génétique",
         price: 100,
         description: "Contient 5 cartes de la faction Mutants.",
         type: "Booster",
       },
       {
         id: "p4",
+        name: "Booster: Technologie Érudite",
+        price: 100,
+        description: "Contient 5 cartes de la faction Érudis.",
+        type: "Booster",
+      },
+      {
+        id: "p5",
         name: "Booster: Mages de l'Arcane",
         price: 100,
         description: "Contient 5 cartes de la faction Mages.",
+        type: "Booster",
+      },
+      {
+        id: "p6",
+        name: "Booster: Aura des Potentias",
+        price: 100,
+        description: "Contient 5 cartes de la faction Potentias.",
         type: "Booster",
       },
     ],
     "Structure Deck": [
       {
         id: "sd1",
-        name: "Structure Deck: Mages de l'Arcane",
+        name: "Structure Deck: Colère du Dragon",
         price: 1000,
         description:
-          "Un deck complet prêt à jouer axé sur les mages et la magie.",
+          "Un deck complet axé sur la puissance destructrice des dragons.",
         type: "Structure Deck",
       },
       {
         id: "sd2",
-        name: "Structure Deck: Rage du Dragon",
+        name: "Structure Deck: Civilisation Antique",
         price: 1000,
         description:
-          "Un deck complet axé sur la puissance offensive des dragons.",
+          "Un deck complet exploitant la magie ancestrale des Kasmigenas.",
+        type: "Structure Deck",
+      },
+      {
+        id: "sd3",
+        name: "Structure Deck: Évolution Mutante",
+        price: 1000,
+        description:
+          "Un deck complet exploitant l'adaptation et les anomalies génétiques des Mutants.",
+        type: "Structure Deck",
+      },
+      {
+        id: "sd4",
+        name: "Structure Deck: Suprématie Technologique",
+        price: 1000,
+        description:
+          "Un deck complet axé sur la technologie et les machines des Érudis.",
+        type: "Structure Deck",
+      },
+      {
+        id: "sd5",
+        name: "Structure Deck: Maîtres de la Magie",
+        price: 1000,
+        description:
+          "Un deck complet prêt à jouer axé sur les mages et leurs sortilèges.",
+        type: "Structure Deck",
+      },
+      {
+        id: "sd6",
+        name: "Structure Deck: Jugement de l'Équilibre",
+        price: 1000,
+        description:
+          "Un deck complet axé sur le soutien et la neutralité des Potentias.",
         type: "Structure Deck",
       },
     ],

@@ -67,11 +67,11 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-bottom: 3px solid #7cbf00;
   color: #a0a5b5;
-  padding: 0.6rem 2.2rem;
+  padding: 0.6rem 0;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 9rem;
   box-sizing: border-box;
+  width: 12rem;
 }
 
 .shop-tab .tab-text {
@@ -298,7 +298,7 @@
     display: flex;
     position: fixed;
     right: 0;
-    top: 15%;
+    top: 10rem;
     width: 3rem;
     height: 3rem;
     background-color: var(--nav-bg);
@@ -314,7 +314,7 @@
       color 0.3s,
       box-shadow 0.3s;
     box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
+    z-index: 999;
   }
 
   .shop-sidebar-toggle.open {
@@ -323,7 +323,6 @@
 
   .shop-sidebar-toggle:hover {
     color: var(--text);
-    box-shadow: -5px 0 15px rgba(0, 242, 254, 0.3);
   }
 
   .toggle-arrow {
@@ -358,13 +357,8 @@
   }
 
   .shop-sidebar {
-    width: calc(100% - 3rem);
     max-width: 100%;
     padding: 1.5rem 1rem;
-  }
-
-  .shop-sidebar-toggle.open {
-    right: 0;
     top: 15rem;
   }
 }

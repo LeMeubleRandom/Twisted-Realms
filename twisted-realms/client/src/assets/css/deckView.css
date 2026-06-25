@@ -420,7 +420,6 @@
 
   .deck-sidebar-toggle:hover {
     color: var(--text);
-    box-shadow: -5px 0 15px rgba(0, 242, 254, 0.3);
   }
 
   .toggle-arrow {
@@ -495,7 +494,7 @@
     position: fixed;
     right: 0;
     left: auto;
-    top: 15rem;
+    top: 13rem;
   }
 
   .deck-sidebar-toggle.open {

@@ -174,6 +174,40 @@ CREATE TABLE `game` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;
 
+-- --------------------------------------------------------
+-- Table `structureDeck`
+-- --------------------------------------------------------
+
+CREATE TABLE `structureDeck` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  `type` VARCHAR(100) NOT NULL,
+  `description` VARCHAR(100) NOT NULL,
+  `cardList` JSON DEFAULT ('[]'),
+  `price` int(11) NOT NULL,
+  `badge` VARCHAR(100) DEFAULT NULL,
+  `mainCardId` int(11) DEFAULT NULL,
+  `recommanded` BOOLEAN DEFAULT FALSE,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;
+
+-- --------------------------------------------------------
+-- Table `cardPack`
+-- --------------------------------------------------------
+
+CREATE TABLE `cardPack` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  `type` VARCHAR(100) NOT NULL,
+  `description` VARCHAR(100) NOT NULL,
+  `cardList` JSON DEFAULT ('[]'),
+  `containedCard` INT(11) NOT NULL,
+  `price` int(11) NOT NULL,
+  `badge` VARCHAR(100) DEFAULT NULL,
+  `recommanded` BOOLEAN DEFAULT FALSE,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
