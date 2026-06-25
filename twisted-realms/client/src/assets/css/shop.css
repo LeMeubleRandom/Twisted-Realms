@@ -38,7 +38,6 @@
   gap: 2rem;
 }
 
-/* Sidebar (Categories) */
 .shop-sidebar {
   display: flex;
   flex-direction: column;
@@ -47,10 +46,9 @@
 
 .shop-sidebar h3 {
   margin: 0;
-  display: none; /* Only show in drawer */
+  display: none;
 }
 
-/* Horizontal tabs layout for PC */
 .shop-tabs {
   display: flex;
   flex-direction: row;
@@ -59,7 +57,6 @@
   padding: 10px 0;
 }
 
-/* Angled tab styling matching the user screenshot */
 .shop-tab {
   display: flex;
   align-items: center;
@@ -85,14 +82,12 @@
   letter-spacing: 0.5px;
 }
 
-/* Recommended Tab: Purple/pink gradient */
 .shop-tab.recommended {
   background: linear-gradient(135deg, #a300a3, #d6006e);
   border-bottom: 3px solid #d6006e;
   color: #fff;
 }
 
-/* Hover effects */
 .shop-tab:hover {
   background: #1a2632;
   color: #fff;
@@ -104,7 +99,6 @@
   box-shadow: 0 0 10px rgba(214, 0, 110, 0.3);
 }
 
-/* Active tab style */
 .shop-tab.active {
   background: linear-gradient(135deg, #a3e600, #82b800);
   border-color: #a3e600;
@@ -129,7 +123,6 @@
   color: #fff;
 }
 
-/* Shop items grid */
 .shop-content {
   display: flex;
   flex-direction: column;
@@ -150,7 +143,6 @@
   gap: 2rem;
 }
 
-/* Shop card styling */
 .shop-item-card {
   background-color: var(--nav-bg);
   border: 1px solid var(--accent-active);
@@ -239,7 +231,6 @@
   box-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
 }
 
-/* Responsive styles */
 .shop-sidebar-overlay {
   display: none;
 }
@@ -248,7 +239,6 @@
   display: none;
 }
 
-/* Tablet & Mobile Layout collapsing tabs into a drawer */
 @media (max-width: 1024px) {
   .shop-main-layout {
     position: relative;
@@ -291,7 +281,6 @@
     flex-wrap: nowrap;
   }
 
-  /* Un-skew tabs when in vertical list in the drawer */
   .shop-tab {
     transform: none;
     border-radius: 6px;
@@ -304,7 +293,6 @@
     transform: none;
   }
 
-  /* Toggle button for drawer */
   .shop-sidebar-toggle {
     display: flex;
     position: fixed;
@@ -320,13 +308,16 @@
     cursor: pointer;
     align-items: center;
     justify-content: center;
-    transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s, box-shadow 0.3s;
+    transition:
+      right 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      color 0.3s,
+      box-shadow 0.3s;
     box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
     z-index: 1000;
   }
 
   .shop-sidebar-toggle.open {
-    right: 20rem; /* Slide to left edge of sidebar */
+    right: 20rem;
   }
 
   .shop-sidebar-toggle:hover {
@@ -338,7 +329,6 @@
     transition: transform 0.3s ease;
   }
 
-  /* Overlay */
   .shop-sidebar-overlay {
     display: block;
     position: fixed;
@@ -352,7 +342,6 @@
   }
 }
 
-/* Mobile specific styling */
 @media (max-width: 768px) {
   .shop-container {
     padding: 30px 15px 0 15px;
@@ -373,8 +362,8 @@
     padding: 1.5rem 1rem;
   }
 
-  /* Make toggle button fixed at right 0 on mobile, staying completely static */
   .shop-sidebar-toggle.open {
     right: 0;
+    top: 15rem;
   }
 }

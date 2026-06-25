@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import "../assets/css/shop.css";
 
@@ -10,15 +10,8 @@ function Shop({ user }) {
     return <Navigate to="/login" replace />;
   }*/
 
-  const categories = [
-    "Recommended",
-    "Pack",
-    "Structure Deck",
-    "Accessories",
-    "Special",
-  ];
+  const categories = ["Recommended", "Pack", "Structure Deck"];
 
-  // Mock shop items based on Twisted Realms theme
   const shopItems = {
     Recommended: [
       {
@@ -127,12 +120,11 @@ function Shop({ user }) {
         <h2>Boutique</h2>
         <div className="user-points">
           <span>Points : </span>
-          <span className="points-amount">{user.points || 1250}</span>
+          <span className="points-amount">{user.credits || 0}</span>
         </div>
       </div>
 
       <div className="shop-main-layout">
-        {/* Mobile sidebar overlay */}
         {isSidebarOpen && (
           <div
             className="shop-sidebar-overlay"
@@ -140,7 +132,6 @@ function Shop({ user }) {
           />
         )}
 
-        {/* Floating toggle button for mobile/tablet */}
         <button
           className={`shop-sidebar-toggle ${isSidebarOpen ? "open" : ""}`}
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -167,7 +158,6 @@ function Shop({ user }) {
           </svg>
         </button>
 
-        {/* Sliding sidebar (Categories) */}
         <div className={`shop-sidebar ${isSidebarOpen ? "open" : ""}`}>
           <h3>Catégories</h3>
           <div className="shop-tabs">
@@ -186,7 +176,6 @@ function Shop({ user }) {
           </div>
         </div>
 
-        {/* Main Content (Items Grid) */}
         <div className="shop-content">
           <div className="active-category-header">
             <h3>{activeTab}</h3>
