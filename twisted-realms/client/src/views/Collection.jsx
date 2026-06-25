@@ -71,7 +71,10 @@ function Collection({ user }) {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (isFactionDropdownOpen && !event.target.closest(".custom-faction-select")) {
+      if (
+        isFactionDropdownOpen &&
+        !event.target.closest(".custom-faction-select")
+      ) {
         setIsFactionDropdownOpen(false);
       }
     };
@@ -154,7 +157,9 @@ function Collection({ user }) {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
           />
-          <div className={`custom-faction-select ${isFactionDropdownOpen ? "open" : ""}`}>
+          <div
+            className={`custom-faction-select ${isFactionDropdownOpen ? "open" : ""}`}
+          >
             <button
               type="button"
               className="custom-faction-trigger"
@@ -216,7 +221,10 @@ function Collection({ user }) {
           })}
         </div>
         <div className={`filtre ${isFilterOpen ? "open" : ""}`}>
-          <div className="filtre-header" onClick={() => setIsFilterOpen(!isFilterOpen)}>
+          <div
+            className="filtre-header"
+            onClick={() => setIsFilterOpen(!isFilterOpen)}
+          >
             <h3>Filtres</h3>
             <div className="collection-dropdown-arrow-wrapper">
               <svg

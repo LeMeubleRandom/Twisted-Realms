@@ -373,7 +373,7 @@
 @media (max-width: 1024px) {
   .collection-container {
     display: grid;
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-rows: auto 1fr;
     margin: 1rem 3rem;
   }
 
