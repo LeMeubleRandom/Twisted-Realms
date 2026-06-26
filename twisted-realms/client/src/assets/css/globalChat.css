@@ -6,7 +6,7 @@
   min-height: 20rem;
   margin-left: 2rem;
   gap: 12px;
-  height: 500px;
+  height: 50vh;
 }
 
 .global-chat h3 {
@@ -162,6 +162,10 @@
 }
 
 @media (max-width: 768px) {
+  .global-chat {
+    height: 500px;
+  }
+
   .global-chat-form {
     flex-direction: column;
   }

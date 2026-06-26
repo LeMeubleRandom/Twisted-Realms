@@ -120,7 +120,6 @@
   .home-container .global-chat {
     grid-column: 1 / 2;
     grid-row: 2 / 4;
-    height: 45vh;
   }
 
   .show-random-card {
@@ -175,7 +174,6 @@
   .home-container .global-chat {
     order: 4;
     width: 100%;
-    height: 45vh;
     min-height: 18rem;
     padding: 1.5rem;
   }
