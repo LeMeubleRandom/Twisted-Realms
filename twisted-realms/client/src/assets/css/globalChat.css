@@ -66,6 +66,7 @@
 .chat-avatar-container {
   border-radius: 50%;
   width: 3rem;
+  min-width: 3rem;
   height: 3rem;
   overflow: hidden;
 }
@@ -74,10 +75,6 @@
   object-fit: cover;
   width: 100%;
   height: 100%;
-}
-
-.message-container {
-  max-width: 82%;
 }
 
 .message-author {
