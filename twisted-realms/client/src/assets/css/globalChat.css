@@ -76,6 +76,10 @@
   height: 100%;
 }
 
+.message-container {
+  max-width: 82%;
+}
+
 .message-author {
   font-size: 0.85rem;
   color: var(--secondary);

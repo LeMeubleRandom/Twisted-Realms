@@ -16,7 +16,8 @@ function GlobalChat({ user }) {
   const [messageList, setMessagesList] = useState([]);
   const messagesEndRef = useRef(null);
 
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+  const backendUrl =
+    import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
   const serverUrl = `${backendUrl.replace(/\/$/, "")}/user-images/`;
 
   const navigate = useNavigate();
@@ -139,7 +140,7 @@ function GlobalChat({ user }) {
                   }}
                 />
               </article>
-              <div>
+              <div className="message-container">
                 <span
                   className={`${m.name === user?.name ? "user-" : ""}message-author`}
                   key={`${m.id}-span`}
