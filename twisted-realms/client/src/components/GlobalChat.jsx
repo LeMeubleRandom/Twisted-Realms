@@ -2,6 +2,7 @@ import "../assets/css/globalChat.css";
 import { useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 import { NavLink, useNavigate } from "react-router-dom";
+import avatarImg from "../assets/images/black_skull_dragon__rush_duel___artwork__by_nhociory_difdumv.png";
 
 const socket = io(
   import.meta.env.VITE_BACKEND_URL || `http://${window.location.hostname}:5000`,
@@ -15,10 +16,8 @@ function GlobalChat({ user }) {
   const [messageList, setMessagesList] = useState([]);
   const messagesEndRef = useRef(null);
 
-  const actualImage = user?.userImage
-    ? `${serverUrl}${user.userImage}`
-    : avatarImg;
-  const [image, setImage] = useState(actualImage);
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+  const serverUrl = `${backendUrl.replace(/\/$/, "")}/user-images/`;
 
   const navigate = useNavigate();
 
@@ -36,6 +35,7 @@ function GlobalChat({ user }) {
       id: Date.now(),
       name: user.name,
       message: messageText,
+      userImage: user.userImage,
     };
 
     try {
@@ -120,30 +120,35 @@ function GlobalChat({ user }) {
       <h3>Chat Général</h3>
 
       <section className="global-chat-messages">
-        {messageList.map((m) => (
-          <div
-            className={`${m.name === user?.name ? "user-" : ""}message-bulle`}
-            key={`${m.id}-div`}
-          >
-            <article className="chat-avatar-container">
-              <img className="chat-avatar" src={actualImage} alt="Avatar" />
-            </article>
-            <div>
-              <span
-                className={`${m.name === user?.name ? "user-" : ""}message-author`}
-                key={`${m.id}-span`}
-              >
-                {m.name}
-              </span>
-              <p
-                className={`${m.name === user?.name ? "user-" : ""}message-text`}
-                key={`${m.id}-p`}
-              >
-                {m.message}
-              </p>
+        {messageList.map((m) => {
+          const messageAvatar = m.userImage
+            ? `${serverUrl}${m.userImage}`
+            : avatarImg;
+          return (
+            <div
+              className={`${m.name === user?.name ? "user-" : ""}message-bulle`}
+              key={`${m.id}-div`}
+            >
+              <article className="chat-avatar-container">
+                <img className="chat-avatar" src={messageAvatar} alt="Avatar" />
+              </article>
+              <div>
+                <span
+                  className={`${m.name === user?.name ? "user-" : ""}message-author`}
+                  key={`${m.id}-span`}
+                >
+                  {m.name}
+                </span>
+                <p
+                  className={`${m.name === user?.name ? "user-" : ""}message-text`}
+                  key={`${m.id}-p`}
+                >
+                  {m.message}
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
         <div ref={messagesEndRef} />
       </section>
 

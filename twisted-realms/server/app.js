@@ -48,6 +48,7 @@ app.use(cookieParser());
 app.use(
   "/user-images",
   express.static(join(__dirname, "../client/src/public/user-images")),
+  express.static(join(__dirname, "../client/src/public/default-images")),
 );
 
 app.use((req, res, next) => {
