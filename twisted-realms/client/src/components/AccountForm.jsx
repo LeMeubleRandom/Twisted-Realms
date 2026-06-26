@@ -7,7 +7,9 @@ import "../assets/css/accountForm.css";
 
 function AccountForm({ user, setUser, fetchUser }) {
   const navigate = useNavigate();
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || `http://${window.location.hostname}:5000`;
+  const backendUrl =
+    import.meta.env.VITE_BACKEND_URL ||
+    `http://${window.location.hostname}:5000`;
   const serverUrl = `${backendUrl.replace(/\/$/, "")}/user-images/`;
 
   const actualImage = user?.userImage
@@ -64,7 +66,7 @@ function AccountForm({ user, setUser, fetchUser }) {
 
       if (response.ok) {
         fetchUser();
-        window.confirm("Informations mises à jour");
+        alert("Informations mise à jour");
       } else {
         console.error("Erreur lors de la mise à jour du profil");
       }
@@ -93,7 +95,7 @@ function AccountForm({ user, setUser, fetchUser }) {
 
       if (response.ok) {
         fetchUser();
-        window.confirm("Informations mises à jour");
+        alert("Informations mise à jour");
       } else {
         console.error("Erreur lors de la mise à jour du profil");
       }
@@ -135,8 +137,6 @@ function AccountForm({ user, setUser, fetchUser }) {
     const imgPaths = Object.keys(modules).map((chemin) => {
       return chemin;
     });
-
-    console.log(imgPaths);
 
     setDefaultImages(imgPaths);
   }, []);

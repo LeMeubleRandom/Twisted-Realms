@@ -74,15 +74,19 @@ class UserService {
   }
 
   static async getUserProfile(userId) {
-    const user = await User.findById(userId);
+    try {
+      const user = await User.findById(userId);
 
-    if (!user) {
-      throw new Error("Joueur introuvable.");
+      if (!user) {
+        throw new Error("Joueur introuvable.");
+      }
+
+      delete user.password;
+
+      return user;
+    } catch (error) {
+      console.error("Erreur lors de la récupération des données", error);
     }
-
-    delete user.password;
-
-    return user;
   }
 
   static async deleteUserImage(fileName) {
@@ -102,8 +106,11 @@ class UserService {
     try {
       await fs.promises.unlink(filePath);
       console.log("Ancienne image supprimée avec succès");
-    } catch (err) {
-      console.error("Erreur lors de la suppression de l'ancienne image:", err);
+    } catch (error) {
+      console.error(
+        "Erreur lors de la suppression de l'ancienne image:",
+        error,
+      );
     }
   }
 
@@ -127,14 +134,13 @@ class UserService {
       });
       await fs.promises.copyFile(defaultPath, userImagesPath);
       return uniqueName;
-    } catch (err) {
-      console.error("Erreur lors de la copie de l'image par défaut :", err);
+    } catch (error) {
+      console.error("Erreur lors de la copie de l'image par défaut :", error);
       return null;
     }
   }
 
   static async randUserImage() {
-    console.log("rand");
     try {
       const cheminDossier = path.join(
         __dirname,
@@ -147,8 +153,8 @@ class UserService {
       if (fichiers.length === 0) return null;
       const randomIdx = Math.floor(Math.random() * fichiers.length);
       return fichiers[randomIdx];
-    } catch (erreur) {
-      console.error("Impossible de lire le dossier", erreur);
+    } catch (error) {
+      console.error("Impossible de lire le dossier", error);
     }
   }
 }

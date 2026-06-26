@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import "../assets/css/shop.css";
 
-function Shop({ user }) {
+function Shop({ user, fetchUser }) {
   const [activeTab, setActiveTab] = useState("Pack");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [shopItems, setShopItems] = useState(null);
 
-  /*if (!user) {
+  if (!user) {
     return <Navigate to="/login" replace />;
-  }*/
+  }
 
   const categories = ["Recommended", "Pack", "Structure Deck"];
 
@@ -25,6 +25,40 @@ function Shop({ user }) {
       const data = await response.json();
       console.log(data);
       setShopItems(data);
+    } catch (error) {
+      console.error("Erreur de connexion au serveur :", error);
+    }
+  };
+
+  const buyItems = async (item) => {
+    const confirmBuying = window.confirm(`Acheter ${item.name}`);
+    if (!confirmBuying) return;
+
+    try {
+      const response = await fetch("/api/shop/buy", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: item.id,
+          type: item.type,
+        }),
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        fetchUser();
+        if (data.drawnCards) {
+          alert(
+            `Achat réalisé avec succès ! Vous avez obtenu les cartes avec les ID : ${data.drawnCards.join(", ")}`,
+          );
+        } else {
+          alert(
+            "Achat réalisé avec succès ! Le deck a été ajouté à vos decks.",
+          );
+        }
+      } else console.error("Erreur lors de la mise à jour du profil");
     } catch (error) {
       console.error("Erreur de connexion au serveur :", error);
     }
@@ -129,14 +163,7 @@ function Shop({ user }) {
                   <div className="item-price">
                     <span className="price-val">{item.price}</span> pts
                   </div>
-                  <button
-                    className="buy-btn"
-                    onClick={() =>
-                      alert(
-                        `Achat de : ${item.name} pour ${item.price} points.`,
-                      )
-                    }
-                  >
+                  <button className="buy-btn" onClick={() => buyItems(item)}>
                     Acheter
                   </button>
                 </div>

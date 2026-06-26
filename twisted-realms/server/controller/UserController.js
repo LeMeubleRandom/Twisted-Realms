@@ -115,7 +115,7 @@ export default class UserController {
       if (!currentUser) {
         return res
           .status(404)
-          .json({ status: "error", message: "Utilisateur introuvable." });
+          .json({ status: "error", message: "Utilisateur introuvable" });
       }
 
       let imageFileName = currentUser.userImage;
@@ -125,7 +125,6 @@ export default class UserController {
         imageFileName = req.file.filename;
         shouldDeleteOldImage = true;
       } else if (defaultImage) {
-        // Strip folder prefix if it's sent as default-images/filename.png
         const plainFileName = defaultImage.split("/").pop().split("\\").pop();
         imageFileName = await UserService.copyDefaultImage(plainFileName);
         shouldDeleteOldImage = true;

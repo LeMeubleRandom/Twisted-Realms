@@ -318,7 +318,7 @@
   }
 
   .shop-sidebar-toggle.open {
-    right: 20rem;
+    right: 15rem;
   }
 
   .shop-sidebar-toggle:hover {
@@ -359,5 +359,6 @@
   .shop-sidebar {
     max-width: 100%;
     padding: 1.5rem 1rem;
+    width: 15rem;
   }
 }

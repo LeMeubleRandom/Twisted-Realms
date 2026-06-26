@@ -76,7 +76,10 @@ function AppContent() {
           path="/register"
           element={user ? <Navigate to="/" replace /> : <Register />}
         />
-        <Route path="/shop" element={<Shop user={user} />} />
+        <Route
+          path="/shop"
+          element={<Shop user={user} fetchUser={fetchUser} />}
+        />
         <Route path="/collection" element={<Collection user={user} />} />
         <Route
           path="/profile"

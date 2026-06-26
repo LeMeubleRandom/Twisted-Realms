@@ -114,4 +114,52 @@ export default class User {
     );
     return collection;
   }
+
+  static async buyItem(user, price) {
+    const updatedCredits = user.credits - price;
+    const [updatedUser] = await pool.execute(
+      "UPDATE user SET credits = ? WHERE id = ?",
+      [updatedCredits, user.id],
+    );
+    return updatedUser;
+  }
+
+  static async addDeckToUser(userId, name, cardList, mainCardId) {
+    const [result] = await pool.execute(
+      "INSERT INTO deck (userId, name, cardList, mainCard, postDate) VALUES (?, ?, ?, ?, UTC_TIMESTAMP())",
+      [userId, name, JSON.stringify(cardList), mainCardId],
+    );
+    return result;
+  }
+
+  static async addCardsToCollection(userId, cardIds) {
+    let collection = await this.getCollection(userId);
+    if (!collection) {
+      await this.createCollection(userId);
+      collection = await this.getCollection(userId);
+    }
+
+    let cardCollection = collection.cardCollection || [];
+    if (typeof cardCollection === "string") cardCollection = JSON.parse(cardCollection);
+
+    let quantity = collection.quantity || [];
+    if (typeof quantity === "string") quantity = JSON.parse(quantity);
+
+    for (const cardId of cardIds) {
+      const index = cardCollection.indexOf(cardId);
+      if (index !== -1) {
+        quantity[index] = (quantity[index] || 0) + 1;
+      } else {
+        cardCollection.push(cardId);
+        quantity.push(1);
+      }
+    }
+
+    const [result] = await pool.execute(
+      "UPDATE userCollection SET cardCollection = ?, quantity = ? WHERE userId = ?",
+      [JSON.stringify(cardCollection), JSON.stringify(quantity), userId],
+    );
+    return result;
+  }
 }
+
