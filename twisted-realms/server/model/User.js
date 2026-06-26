@@ -140,7 +140,8 @@ export default class User {
     }
 
     let cardCollection = collection.cardCollection || [];
-    if (typeof cardCollection === "string") cardCollection = JSON.parse(cardCollection);
+    if (typeof cardCollection === "string")
+      cardCollection = JSON.parse(cardCollection);
 
     let quantity = collection.quantity || [];
     if (typeof quantity === "string") quantity = JSON.parse(quantity);
@@ -161,5 +162,12 @@ export default class User {
     );
     return result;
   }
-}
 
+  static async activateDeck(id, deckId) {
+    const [user] = await pool.execute(
+      "UPDATE user SET activeDeck = ? WHERE id = ?",
+      [deckId, id],
+    );
+    return user;
+  }
+}

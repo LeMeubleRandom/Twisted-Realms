@@ -9,4 +9,6 @@ const router = express.Router();
 router.post("/host", verifyToken, GameController.host);
 router.post("/join", verifyToken, GameController.join);
 
+router.get("/", verifyToken, GameController.getLobbys);
+
 export default router;

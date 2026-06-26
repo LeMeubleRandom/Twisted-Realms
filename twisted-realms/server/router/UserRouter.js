@@ -19,6 +19,7 @@ router.post("/email", verifyToken, UserController.updateUserEmail);
 router.post("/logout", verifyToken, UserController.logout);
 router.post("/deck/create", verifyToken, UserController.createDeck);
 router.post("/deck/update", verifyToken, UserController.updateDeck);
+router.post("/deck/activate", verifyToken, UserController.activateDeck);
 
 router.get("/me", verifyToken, UserController.getMe);
 router.get("/deck", verifyToken, UserController.getAllDecksByUserId);

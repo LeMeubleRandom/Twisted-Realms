@@ -1,13 +1,15 @@
 import GameManager from "../script/GameManager.js";
 import crypto from "crypto";
 
+import Game from "../model/Game.js";
+
 export default class GameController {
   static async host(req, res) {
     try {
-      const gameId = crypto.randomUUID();
-      const { userId, userName } = req.body;
+      const gameId = Math.floor(100000 + Math.random() * 900000);
+      const { userId, userName, activeDeck } = req.body;
 
-      const game = await Game.createGame(gameId, userId, userName);
+      const game = await Game.createGame(gameId, userId, activeDeck);
       //GameManager.startGame(gameId);
 
       res.status(200).json(game);
@@ -22,6 +24,16 @@ export default class GameController {
       res.status(200).json("join");
     } catch (error) {
       console.error("Error joiningGame:", error);
+      res.status(500).json({ status: "error", message: "Erreur serveur" });
+    }
+  }
+
+  static async getLobbys(req, res) {
+    try {
+      const lobbys = await Game.getLobbys();
+      res.status(200).json(lobbys);
+    } catch (error) {
+      console.error("Error getLobbys  :", error);
       res.status(500).json({ status: "error", message: "Erreur serveur" });
     }
   }

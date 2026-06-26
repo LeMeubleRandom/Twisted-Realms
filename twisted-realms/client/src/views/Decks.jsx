@@ -63,6 +63,28 @@ function Decks({ user }) {
     setIncompDeck(missing2);
   };
 
+  const pushActiveDeck = async () => {
+    if (!activeDeck || !activeDeck.id) return;
+    try {
+      const response = await fetch("/api/user/deck/activate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: user.id,
+          deckId: activeDeck.id,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP : ${response.status}`);
+      }
+    } catch (error) {
+      console.error("Erreur de connexion au serveur :", error);
+    }
+  };
+
   const fetchCards = async (e) => {
     try {
       const response = await fetch("/api/card", {
@@ -221,9 +243,15 @@ function Decks({ user }) {
     if (deckList.length == 0) {
       console.log("Cet utilisateur n'a aucun deck enregistré");
     } else {
-      fetchcardsByDeck(deckList[0]);
+      const initialDeck =
+        deckList.find((d) => d.id === user.activeDeck) || deckList[0];
+      fetchcardsByDeck(initialDeck);
     }
   }, [deckList]);
+
+  useEffect(() => {
+    pushActiveDeck();
+  }, [activeDeck]);
 
   return (
     <main>
@@ -256,7 +284,7 @@ function Decks({ user }) {
             return (
               <div
                 key={c.name}
-                className="decks-view"
+                className={`decks-view ${activeDeck?.id === c.id ? "active-deck" : ""}`}
                 onClick={() => viewDeck(c)}
               >
                 <h2>{c.name}</h2>

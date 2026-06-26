@@ -260,7 +260,7 @@ export default class UserController {
       console.error("Error deleteUserImage:", error);
       res.status(500).json({
         status: "error",
-        message: "Erreur serveur lors de la suppression de l'image",
+        message: error.message,
       });
     }
   }
@@ -276,6 +276,17 @@ export default class UserController {
         status: "error",
         message: error.message,
       });
+    }
+  }
+
+  static async activateDeck(req, res) {
+    try {
+      const { userId, deckId } = req.body;
+      const response = await User.activateDeck(userId, deckId);
+      res.status(200).json(response);
+    } catch (error) {
+      console.error("Error activateDeck :", error);
+      res.status(500).json({ status: "error", message: error.message });
     }
   }
 }
