@@ -106,17 +106,30 @@ const GameTable = ({ user, gameState, sendAction }) => {
 
       <div className="board-content">
         <section className="player-side opponent-side">
-          <div className="player-header">
-            <h3>{opponent.name} (Adversaire)</h3>
-            <div className="stats-row">
-              <span className="stat-badge pv-badge">PV: {opponent.pv}</span>
-              <span className="stat-badge counter-badge">Accélérateurs: {opponent.acceleratorCounters || 0}</span>
+          <div className="player-left-panel">
+            <div className="player-header">
+              <h3>{opponent.name} (Adversaire)</h3>
+              <div className="stats-row">
+                <span className="stat-badge pv-badge">PV: {opponent.pv}</span>
+                <span className="stat-badge counter-badge">Accélérateurs: {opponent.acceleratorCounters || 0}</span>
+              </div>
+              {selectedAttackerIndex !== null && (
+                <button className="direct-attack-btn active-glow" onClick={handleDirectAttack}>
+                  Attaquer directement l'adversaire !
+                </button>
+              )}
             </div>
-            {selectedAttackerIndex !== null && (
-              <button className="direct-attack-btn active-glow" onClick={handleDirectAttack}>
-                Attaquer directement l'adversaire !
-              </button>
-            )}
+
+            <div className="side-zones">
+              <div className="side-slot deck-slot">
+                <span>Deck</span>
+                <strong>{opponent.deck.length}</strong>
+              </div>
+              <div className="side-slot graveyard-slot">
+                <span>Cimetière</span>
+                <strong>{opponent.graveyard.length}</strong>
+              </div>
+            </div>
           </div>
 
           <div className="field-layout">
@@ -154,25 +167,27 @@ const GameTable = ({ user, gameState, sendAction }) => {
               })}
             </div>
           </div>
-
-          <div className="side-zones">
-            <div className="side-slot deck-slot">
-              <span>Deck</span>
-              <strong>{opponent.deck.length}</strong>
-            </div>
-            <div className="side-slot graveyard-slot">
-              <span>Cimetière</span>
-              <strong>{opponent.graveyard.length}</strong>
-            </div>
-          </div>
         </section>
 
         <section className="player-side self-side">
-          <div className="player-header">
-            <h3>{self.name} (Vous)</h3>
-            <div className="stats-row">
-              <span className="stat-badge pv-badge">PV: {self.pv}</span>
-              <span className="stat-badge counter-badge">Accélérateurs: {self.acceleratorCounters}</span>
+          <div className="player-left-panel">
+            <div className="player-header">
+              <h3>{self.name} (Vous)</h3>
+              <div className="stats-row">
+                <span className="stat-badge pv-badge">PV: {self.pv}</span>
+                <span className="stat-badge counter-badge">Accélérateurs: {self.acceleratorCounters}</span>
+              </div>
+            </div>
+
+            <div className="side-zones">
+              <div className="side-slot deck-slot">
+                <span>Deck</span>
+                <strong>{self.deck.length}</strong>
+              </div>
+              <div className="side-slot graveyard-slot">
+                <span>Cimetière</span>
+                <strong>{self.graveyard.length}</strong>
+              </div>
             </div>
           </div>
 
@@ -213,17 +228,6 @@ const GameTable = ({ user, gameState, sendAction }) => {
                   </div>
                 );
               })}
-            </div>
-          </div>
-
-          <div className="side-zones">
-            <div className="side-slot deck-slot">
-              <span>Deck</span>
-              <strong>{self.deck.length}</strong>
-            </div>
-            <div className="side-slot graveyard-slot">
-              <span>Cimetière</span>
-              <strong>{self.graveyard.length}</strong>
             </div>
           </div>
         </section>

@@ -79,8 +79,8 @@
 }
 
 .board-content {
-  margin-left: 240px;
-  margin-right: 300px;
+  margin: 0 auto;
+  width: 760px;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -88,7 +88,7 @@
 
 .player-side {
   display: grid;
-  grid-template-columns: 200px 1fr 100px;
+  grid-template-columns: 180px 1fr;
   align-items: center;
   background: rgba(18, 13, 45, 0.4);
   border: 1px solid rgba(138, 43, 226, 0.15);
@@ -96,6 +96,13 @@
   padding: 1.5rem;
   gap: 2rem;
   position: relative;
+}
+
+.player-left-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: stretch;
 }
 
 .opponent-side {
@@ -312,6 +319,7 @@
   flex-direction: column;
   gap: 8px;
   width: 82px;
+  align-self: center;
 }
 
 .side-slot {
@@ -336,13 +344,13 @@
   position: fixed;
   right: 1.5rem;
   top: 95px;
-  width: 280px;
+  width: 310px;
   height: calc(100vh - 120px);
   box-sizing: border-box;
   background: rgba(12, 8, 30, 0.95);
   border: 1px solid var(--color-border);
   border-radius: 16px;
-  padding: 1.5rem 1rem;
+  padding: 1rem 0.5rem;
   box-shadow: var(--glow-primary);
   display: flex;
   flex-direction: column;
@@ -359,19 +367,15 @@
 .hand-cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 1rem 0.5rem;
   flex-grow: 1;
   align-items: center;
+  justify-items: center;
 }
 
 .hand-card-wrapper {
   position: relative;
-  flex-shrink: 0;
-  width: 12rem;
-  height: 18rem;
   zoom: 0.55;
 }
 
