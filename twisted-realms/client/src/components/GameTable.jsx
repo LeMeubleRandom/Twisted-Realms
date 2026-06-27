@@ -80,15 +80,15 @@ const GameTable = ({ user, gameState, sendAction }) => {
     <div className="board-container">
       <header className="game-status-bar">
         <div className="status-item">
-          <span>Tour : </span>
+          <span>Tour</span>
           <strong className="status-val">#{gameState.turn}</strong>
         </div>
         <div className="status-item">
-          <span>Phase active : </span>
+          <span>Phase active</span>
           <strong className="status-val phase-name">{currentPhase}</strong>
         </div>
         <div className="status-item">
-          <span>Tour de : </span>
+          <span>Tour de</span>
           <strong className={`status-val player-turn ${isMyTurn ? "my-turn" : "opponent-turn"}`}>
             {isMyTurn ? "VOUS" : opponent.name}
           </strong>
@@ -223,56 +223,56 @@ const GameTable = ({ user, gameState, sendAction }) => {
             </div>
           </div>
         </section>
-
-        <section className="hand-container">
-          <h4 className="hand-title">Votre Main ({self.hand.length} cartes)</h4>
-          <div className="hand-cards">
-            {self.hand.map((card, index) => {
-              const isSelected = selectedHandIndex === index;
-              const canAfford = self.acceleratorCounters >= card.cost;
-              return (
-                <div key={`hand-${index}`} className="hand-card-wrapper">
-                  <div
-                    className={`hand-card-item-container ${isSelected ? "selected" : ""}`}
-                    onClick={() => handleHandCardClick(index)}
-                  >
-                    <Card card={{ ...card, PV: card.pv }} isMini={false} />
-                  </div>
-
-                  {isSelected && isMyTurn && currentPhase === "MainPhase1" && (
-                    <div className="hand-card-actions">
-                      <button
-                        className="action-btn acc-btn"
-                        onClick={() => executeHandAction("USE_ACCELERATOR", index)}
-                      >
-                        Accélérer (+{card.accelerator})
-                      </button>
-                      {card.type === "Être" && (
-                        <button
-                          className="action-btn play-btn"
-                          disabled={!canAfford}
-                          onClick={() => executeHandAction("SUMMON_BEING", index)}
-                        >
-                          Invoquer
-                        </button>
-                      )}
-                      {(card.type === "Soutien" || card.type === "Sort") && (
-                        <button
-                          className="action-btn play-btn"
-                          disabled={!canAfford}
-                          onClick={() => executeHandAction("PLAY_SUPPORT", index)}
-                        >
-                          Jouer Sort
-                        </button>
-                      )}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </section>
       </div>
+
+      <section className="hand-container">
+        <h4 className="hand-title">Main ({self.hand.length})</h4>
+        <div className="hand-cards">
+          {self.hand.map((card, index) => {
+            const isSelected = selectedHandIndex === index;
+            const canAfford = self.acceleratorCounters >= card.cost;
+            return (
+              <div key={`hand-${index}`} className="hand-card-wrapper">
+                <div
+                  className={`hand-card-item-container ${isSelected ? "selected" : ""}`}
+                  onClick={() => handleHandCardClick(index)}
+                >
+                  <Card card={{ ...card, PV: card.pv }} isMini={false} />
+                </div>
+
+                {isSelected && isMyTurn && currentPhase === "MainPhase1" && (
+                  <div className="hand-card-actions">
+                    <button
+                      className="action-btn acc-btn"
+                      onClick={() => executeHandAction("USE_ACCELERATOR", index)}
+                    >
+                      Accélérer (+{card.accelerator})
+                    </button>
+                    {card.type === "Être" && (
+                      <button
+                        className="action-btn play-btn"
+                        disabled={!canAfford}
+                        onClick={() => executeHandAction("SUMMON_BEING", index)}
+                      >
+                        Invoquer
+                      </button>
+                    )}
+                    {(card.type === "Soutien" || card.type === "Sort") && (
+                      <button
+                        className="action-btn play-btn"
+                        disabled={!canAfford}
+                        onClick={() => executeHandAction("PLAY_SUPPORT", index)}
+                      >
+                        Jouer Sort
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </section>
     </div>
   );
 };
