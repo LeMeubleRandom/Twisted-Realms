@@ -87,7 +87,41 @@ export default class GameController {
   static async startGame(req, res) {
     try {
       const { gameId } = req.body;
+
+      const gameRow = await Game.findById(gameId);
+      if (!gameRow) {
+        return res.status(404).json({ status: "error", message: "Salon introuvable." });
+      }
+
+      if (!gameRow.player2Id) {
+        return res.status(400).json({
+          status: "error",
+          message: "Il manque un adversaire pour lancer la partie.",
+        });
+      }
+
+      const player1Data = {
+        id: gameRow.player1Id,
+        name: gameRow.player1Name,
+        activeDeck: gameRow.player1DeckId,
+      };
+      const player2Data = {
+        id: gameRow.player2Id,
+        name: gameRow.player2Name,
+        activeDeck: gameRow.player2DeckId,
+      };
+
       await Game.startGame(gameId);
+      gameRow.isStarted = 1;
+      const runningGame = await GameManager.startGame(Number(gameId), player1Data, player2Data, gameRow);
+
+      const p1Hand = runningGame.players.p1.hand.map(c => c.id);
+      const p2Hand = runningGame.players.p2.hand.map(c => c.id);
+      const p1DeckOrder = runningGame.players.p1.deck.map(c => c.id);
+      const p2DeckOrder = runningGame.players.p2.deck.map(c => c.id);
+
+      await Game.updateGameState(gameId, p1Hand, p2Hand, p1DeckOrder, p2DeckOrder);
+
       res.status(200).json({ status: "success", message: "Partie lancée !" });
     } catch (error) {
       console.error("Error startGame:", error);
@@ -106,6 +140,7 @@ export default class GameController {
       if (gameDetails) {
         if (Number(gameDetails.player1Id) === Number(userId)) {
           await Game.deleteGame(gameId);
+          GameManager.endGame(Number(gameId));
         } else {
           await Game.removePlayer2(gameId);
         }
@@ -120,9 +155,22 @@ export default class GameController {
 
   static async getGameStart(req, res) {
     try {
-      res
-        .status(200)
-        .json({ status: "success", message: "Partie initialisée" });
+      const userId = req.userId;
+      const user = await User.findById(userId);
+      if (!user || !user.gameId) {
+        return res
+          .status(400)
+          .json({ status: "error", message: "Vous n'êtes pas dans une partie." });
+      }
+
+      const game = GameManager.getGame(Number(user.gameId));
+      if (!game) {
+        return res
+          .status(404)
+          .json({ status: "error", message: "Partie introuvable dans la mémoire du serveur." });
+      }
+
+      res.status(200).json({ status: "success", game });
     } catch (error) {
       console.error("Error getGameStart:", error);
       res.status(500).json({ status: "error", message: error.message });

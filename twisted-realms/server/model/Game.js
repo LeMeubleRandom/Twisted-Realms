@@ -4,7 +4,7 @@ import pool from "../db/mysql.js";
 export default class Game {
   static async createGame(gameId, userId, activeDeck) {
     const [result] = await pool.execute(
-      "INSERT INTO game (gameId, player1Id, player1DeckId, createDate, adminId) VALUES (?, ?, ?, UTC_TIMESTAMP(), ?)",
+      "INSERT INTO game (gameId, player1Id, player1DeckId, createDate, adminId, player1Hand, player2Hand) VALUES (?, ?, ?, UTC_TIMESTAMP(), ?, '[]', '[]')",
       [gameId, userId, activeDeck, userId],
     );
     return result;
@@ -14,6 +14,20 @@ export default class Game {
     const [result] = await pool.execute(
       "UPDATE game SET player2Id = ?, player2DeckId = ? WHERE gameId = ?",
       [userId, activeDeck, gameId],
+    );
+    return result;
+  }
+
+  static async updateGameState(gameId, p1Hand, p2Hand, p1DeckOrder, p2DeckOrder) {
+    const [result] = await pool.execute(
+      "UPDATE game SET player1Hand = ?, player2Hand = ?, player1DeckOrder = ?, player2DeckOrder = ? WHERE gameId = ?",
+      [
+        JSON.stringify(p1Hand),
+        JSON.stringify(p2Hand),
+        JSON.stringify(p1DeckOrder),
+        JSON.stringify(p2DeckOrder),
+        gameId,
+      ]
     );
     return result;
   }
