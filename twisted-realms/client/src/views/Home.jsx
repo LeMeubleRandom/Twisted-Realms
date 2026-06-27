@@ -60,10 +60,10 @@ function Home({ user }) {
         <div className="home-intro">
           <h1>Bienvenue dans Twisted Realms</h1>
           <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Soluta
-            odio error corrupti ipsam veritatis laudantium illo voluptate quos
-            corporis eligendi. Minima consectetur nostrum blanditiis, aut
-            dolorum consequatur rerum architecto molestiae?
+            Bienvenue dans Twisted Realms, le jeu de cartes à collectionner
+            stratégique et entièrement jouable sur navigateur. Domptez les
+            forces de 6 factions uniques, optimisez vos compteurs de puissance
+            et défiez vos adversaires dans des affrontements tactiques intenses.
           </p>
         </div>
         <div className="home-profile">

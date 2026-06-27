@@ -30,7 +30,15 @@ body,
   width: 100%;
   min-height: 100vh;
   margin: 0;
-  background-color: var(--bg);
+  background-color: #050505;
+
+  background-image: radial-gradient(
+    circle at center,
+    rgba(75, 0, 130, 0.2) 0%,
+    rgba(20, 0, 0, 0.4) 70%,
+    #000000 100%
+  );
+  background-attachment: fixed;
   color: var(--text);
   -ms-overflow-style: none;
   scrollbar-width: none;

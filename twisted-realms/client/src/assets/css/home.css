@@ -1,5 +1,13 @@
 /* src/assets/css/home.css */
 
+.home-intro,
+.home-container .global-chat,
+.home-profile,
+.show-random-card {
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 20px rgba(138, 43, 226, 0.15);
+}
+
 .home-container {
   padding: 50px 40px 0 40px;
   gap: 2rem 4rem;
