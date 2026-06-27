@@ -10,7 +10,13 @@ export default class Game {
     return game;
   }
 
-  static async joinGame() {}
+  static async joinGame(gameId, userId, activeDeck) {
+    const [game] = await pool.execute(
+      "UPDATE game SET player2Id, player2DeckId WHERE gameId = ?",
+      [userId, activeDeck, gameId],
+    );
+    return game;
+  }
 
   static async getLobbys() {
     const [lobbys] = await pool.execute(`

@@ -341,7 +341,9 @@ const DeckView = ({
           <button
             className={`deck-sidebar-toggle ${isSidebarOpen ? "open" : ""}`}
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            aria-label={isSidebarOpen ? "Fermer les filtres" : "Ouvrir les filtres"}
+            aria-label={
+              isSidebarOpen ? "Fermer les filtres" : "Ouvrir les filtres"
+            }
           >
             <svg
               className={`toggle-arrow ${isSidebarOpen ? "open" : ""}`}

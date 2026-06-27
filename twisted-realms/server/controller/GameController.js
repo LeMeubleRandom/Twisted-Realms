@@ -7,7 +7,7 @@ export default class GameController {
   static async host(req, res) {
     try {
       const gameId = Math.floor(100000 + Math.random() * 900000);
-      const { userId, userName, activeDeck } = req.body;
+      const { userId, activeDeck } = req.body;
 
       const game = await Game.createGame(gameId, userId, activeDeck);
       //GameManager.startGame(gameId);
@@ -21,7 +21,11 @@ export default class GameController {
 
   static async join(req, res) {
     try {
-      res.status(200).json("join");
+      const { userId, activeDeck, gameId } = req.body;
+
+      const game = await game.joinGame(gameId, userId, activeDeck);
+
+      res.status(200).json(game);
     } catch (error) {
       console.error("Error joiningGame:", error);
       res.status(500).json({ status: "error", message: "Erreur serveur" });

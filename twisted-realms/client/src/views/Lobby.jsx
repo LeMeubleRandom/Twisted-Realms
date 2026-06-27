@@ -42,7 +42,6 @@ function Lobby({ user }) {
         },
         body: JSON.stringify({
           userId: user.id,
-          userName: user.name,
           activeDeck: user.activeDeck,
         }),
         credentials: "include",
@@ -67,7 +66,7 @@ function Lobby({ user }) {
         },
         body: JSON.stringify({
           userId: user.id,
-          userName: user.name,
+          activeDeck: user.activeDeck,
           gameId: gameId,
         }),
         credentials: "include",
