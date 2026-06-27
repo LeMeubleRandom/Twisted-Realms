@@ -84,7 +84,6 @@
 }
 
 .shop-tab.recommended {
-  background: linear-gradient(135deg, #a300a3, #d6006e);
   border-bottom: 3px solid #d6006e;
   color: #fff;
 }
@@ -96,8 +95,8 @@
 }
 
 .shop-tab.recommended:hover {
-  background: linear-gradient(135deg, #be00be, #eb007a);
   box-shadow: 0 0 10px rgba(214, 0, 110, 0.3);
+  border-color: linear-gradient(135deg, #be00be, #eb007a);
 }
 
 .shop-tab.active {
