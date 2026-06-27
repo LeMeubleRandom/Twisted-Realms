@@ -52,8 +52,16 @@ export default class Game {
     const p1Decks = await User.findDecksByUserId(this.players.p1.id);
     const p1Deck =
       p1Decks.find((d) => d.id === this.players.p1.deckId) || p1Decks[0];
+    
+    let p1CardList = [];
+    if (p1Deck && p1Deck.cardList) {
+      p1CardList = typeof p1Deck.cardList === "string"
+        ? JSON.parse(p1Deck.cardList)
+        : p1Deck.cardList;
+    }
+
     const p1Cards = p1Deck
-      ? await CardModel.getCardsByDeck(JSON.parse(p1Deck.cardList))
+      ? await CardModel.getCardsByDeck(p1CardList)
       : [];
     const p1MainCard =
       p1Deck && p1Deck.mainCard
@@ -63,8 +71,16 @@ export default class Game {
     const p2Decks = await User.findDecksByUserId(this.players.p2.id);
     const p2Deck =
       p2Decks.find((d) => d.id === this.players.p2.deckId) || p2Decks[0];
+
+    let p2CardList = [];
+    if (p2Deck && p2Deck.cardList) {
+      p2CardList = typeof p2Deck.cardList === "string"
+        ? JSON.parse(p2Deck.cardList)
+        : p2Deck.cardList;
+    }
+
     const p2Cards = p2Deck
-      ? await CardModel.getCardsByDeck(JSON.parse(p2Deck.cardList))
+      ? await CardModel.getCardsByDeck(p2CardList)
       : [];
     const p2MainCard =
       p2Deck && p2Deck.mainCard

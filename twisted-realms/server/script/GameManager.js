@@ -12,9 +12,8 @@ class GameManager {
     }
 
     const newGame = new Game(gameId, player1Data, player2Data, lobbyData);
-    this.games.set(gameId, newGame);
-
     await newGame.start();
+    this.games.set(gameId, newGame);
     return newGame;
   }
 
