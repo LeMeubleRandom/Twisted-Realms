@@ -18,7 +18,7 @@ export default class Game {
     return result;
   }
 
-  static async getLobbys() {
+  static async getAllLobby() {
     const [lobbys] = await pool.execute(`
       SELECT g.*, u.name AS player1Name
       FROM game g
@@ -26,6 +26,20 @@ export default class Game {
       ORDER BY g.createDate ASC
     `);
     return lobbys;
+  }
+
+  static async findById(gameId) {
+    const [[gameRow]] = await pool.execute(
+      `
+      SELECT g.*, u1.name AS player1Name, u1.userImage AS player1Image, u2.name AS player2Name, u2.userImage AS player2Image
+      FROM game g
+      LEFT JOIN user u1 ON g.player1Id = u1.id
+      LEFT JOIN user u2 ON g.player2Id = u2.id
+      WHERE g.gameId = ?
+    `,
+      [gameId],
+    );
+    return gameRow;
   }
 
   static async getPlayers(gameId) {
@@ -43,5 +57,28 @@ export default class Game {
       players.push(gameRow.player2Id);
     }
     return players;
+  }
+
+  static async startGame(gameId) {
+    const [result] = await pool.execute(
+      "UPDATE game SET isStarted = 1 WHERE gameId = ?",
+      [gameId],
+    );
+    return result;
+  }
+
+  static async deleteGame(gameId) {
+    const [result] = await pool.execute("DELETE FROM game WHERE gameId = ?", [
+      gameId,
+    ]);
+    return result;
+  }
+
+  static async removePlayer2(gameId) {
+    const [result] = await pool.execute(
+      "UPDATE game SET player2Id = NULL, player2DeckId = NULL WHERE gameId = ?",
+      [gameId],
+    );
+    return result;
   }
 }

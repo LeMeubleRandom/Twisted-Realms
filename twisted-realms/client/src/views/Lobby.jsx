@@ -3,7 +3,8 @@ import { useState, useEffect, useMemo } from "react";
 
 import "../assets/css/lobby.css";
 
-function Lobby({ user }) {
+function Lobby({ user, fetchUser }) {
+  const navigate = useNavigate();
   const [lobbys, setLobbys] = useState([]);
   const [player1, setPlayer1] = useState(null);
   const [player2, setPlayer2] = useState(null);
@@ -11,6 +12,10 @@ function Lobby({ user }) {
 
   if (!user) {
     return <Navigate to="/login" replace />;
+  }
+
+  if (user.inGame) {
+    return <Navigate to="/GameLobby" replace />;
   }
 
   const fetchLobby = async () => {
@@ -51,7 +56,10 @@ function Lobby({ user }) {
         throw new Error(`Erreur HTTP : ${response.status}`);
       }
       const data = await response.json();
+      console.log("Created game:", data);
       fetchLobby();
+      if (fetchUser) await fetchUser();
+      navigate("/GameLobby");
     } catch (error) {
       console.error("Erreur de connexion au serveur :", error);
     }
@@ -73,12 +81,18 @@ function Lobby({ user }) {
       });
 
       if (!response.ok) {
-        throw new Error(`Erreur HTTP : ${response.status}`);
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.message || `Erreur HTTP : ${response.status}`,
+        );
       }
       const data = await response.json();
       console.log("Joined game:", data);
+      if (fetchUser) await fetchUser();
+      navigate("/GameLobby");
     } catch (error) {
       console.error("Erreur de connexion au serveur :", error);
+      alert(error.message);
     }
   };
 

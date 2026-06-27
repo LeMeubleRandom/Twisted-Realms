@@ -17,6 +17,7 @@ import Login from "./views/Login";
 import Register from "./views/Register";
 import Game from "./views/Game";
 import Decks from "./views/Decks";
+import GameLobby from "./views/GameLobby";
 
 import NotFound from "./views/NotFound";
 
@@ -95,7 +96,9 @@ function AppContent() {
           path="/decks"
           element={<Decks user={user} fetchUser={fetchUser} />}
         />
-        <Route path="/lobby" element={<Lobby user={user} />} />
+        <Route path="/lobby" element={<Lobby user={user} fetchUser={fetchUser} />} />
+        <Route path="/GameLobby" element={<GameLobby user={user} fetchUser={fetchUser} />} />
+        <Route path="/game" element={<Game user={user} />} />
         <Route path="/card" element={<Card user={user} isMini={false} />} />
         <Route path="/.." element={<NotFound />} />
       </Routes>

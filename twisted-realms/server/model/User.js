@@ -170,4 +170,20 @@ export default class User {
     );
     return user;
   }
+
+  static async setGameId(id, gameId) {
+    const [user] = await pool.execute(
+      "UPDATE user SET gameId = ? WHERE id = ?",
+      [gameId, id],
+    );
+    return user;
+  }
+
+  static async setInGame(id, inGame) {
+    const [user] = await pool.execute(
+      "UPDATE user SET inGame = ? WHERE id = ?",
+      [inGame, id],
+    );
+    return user;
+  }
 }
