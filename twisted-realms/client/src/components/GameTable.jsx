@@ -93,6 +93,10 @@ const GameTable = ({ user, gameState, sendAction }) => {
             {isMyTurn ? "VOUS" : opponent.name}
           </strong>
         </div>
+        <div className="status-item">
+          <span>Main adversaire</span>
+          <strong className="status-val opponent-hand-val">{opponent.hand.length} cartes</strong>
+        </div>
         {isMyTurn && (
           <button className="next-phase-btn active-glow" onClick={handleNextPhase}>
             {gameState.nextPhase === "DrawPhase" ? "Fin de tour" : "Phase Suivante"}
