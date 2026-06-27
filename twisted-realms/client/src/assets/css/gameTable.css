@@ -471,7 +471,7 @@
 .hand-card-actions {
   position: absolute;
   top: 50%;
-  left: -125px;
+  left: 10%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
@@ -740,9 +740,15 @@
   }
 
   @keyframes rotateDevice {
-    0% { transform: rotate(0deg); }
-    50% { transform: rotate(90deg); }
-    100% { transform: rotate(0deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+    50% {
+      transform: rotate(90deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
   }
 
   @keyframes bounceIn {
