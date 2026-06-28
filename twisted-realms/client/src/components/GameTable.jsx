@@ -23,6 +23,7 @@ const GameTable = ({ user, gameState, sendAction }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [showSurrender, setShowSurrender] = useState(false);
   const [hasSurrend, setHasSurrend] = useState("Vous gagnez 20 crédits");
+  const [effectTargetingFlow, setEffectTargetingFlow] = useState(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -46,6 +47,73 @@ const GameTable = ({ user, gameState, sendAction }) => {
 
   const executeHandAction = (actionType, index) => {
     sendAction(actionType, { cardHandIndex: index });
+    setSelectedHandIndex(null);
+  };
+
+  const handlePlayOrSummonClick = (actionType, index) => {
+    const card = self.hand[index];
+    if (!card) return;
+
+    if (actionType === "PLAY_SUPPORT" && (card.id === 62 || card.name?.toLowerCase() === "réincarnation de monstre")) {
+      const hasBeingInGraveyard = self.graveyard.some((c) => c.type === "Être");
+      if (!hasBeingInGraveyard) {
+        alert("Effet de Réincarnation : Aucun Être dans votre cimetière à réinvoquer !");
+        return;
+      }
+      setEffectTargetingFlow({
+        card,
+        handIndex: index,
+        actionType,
+        step: "select_graveyard",
+        discardIndex: null,
+        graveyardCardId: null,
+      });
+      return;
+    }
+
+    if (actionType === "SUMMON_BEING" && (card.id === 1 || card.name?.toLowerCase().includes("nyxos"))) {
+      const hasBeingInGraveyard = self.graveyard.some((c) => c.type === "Être");
+      const hasOtherCardInHand = self.hand.length > 1;
+      if (!hasOtherCardInHand || !hasBeingInGraveyard) {
+        alert("Effet de Nyxos : Vous devez avoir au moins une autre carte en main à défausser et un Être dans le cimetière !");
+        return;
+      }
+      setEffectTargetingFlow({
+        card,
+        handIndex: index,
+        actionType,
+        step: "select_discard",
+        discardIndex: null,
+        graveyardCardId: null,
+      });
+      return;
+    }
+
+    executeHandAction(actionType, index);
+  };
+
+  const handleDiscardSelection = (handIndex) => {
+    setEffectTargetingFlow((prev) => ({
+      ...prev,
+      discardIndex: handIndex,
+      step: "select_graveyard",
+    }));
+  };
+
+  const handleGraveyardSelection = (graveyardCard) => {
+    if (effectTargetingFlow.actionType === "PLAY_SUPPORT") {
+      sendAction("PLAY_SUPPORT", {
+        cardHandIndex: effectTargetingFlow.handIndex,
+        targetGraveyardCardId: graveyardCard.id,
+      });
+    } else if (effectTargetingFlow.actionType === "SUMMON_BEING") {
+      sendAction("SUMMON_BEING", {
+        cardHandIndex: effectTargetingFlow.handIndex,
+        discardCardHandIndex: effectTargetingFlow.discardIndex,
+        targetGraveyardCardId: graveyardCard.id,
+      });
+    }
+    setEffectTargetingFlow(null);
     setSelectedHandIndex(null);
   };
 
@@ -139,6 +207,62 @@ const GameTable = ({ user, gameState, sendAction }) => {
               <button
                 className="surrender-btn cancel"
                 onClick={() => setShowSurrender(false)}
+              >
+                Annuler
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {effectTargetingFlow && (
+        <div
+          className="effect-selector-overlay"
+          onClick={() => setEffectTargetingFlow(null)}
+        >
+          <div
+            className="effect-selector-card"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3>
+              {effectTargetingFlow.step === "select_discard"
+                ? "Effet de Nyxos : Défausser une carte"
+                : "Choisir un Être dans le cimetière"}
+            </h3>
+            <div className="selector-cards-list">
+              {effectTargetingFlow.step === "select_discard" ? (
+                self.hand.map((c, idx) => {
+                  if (idx === effectTargetingFlow.handIndex) return null;
+                  return (
+                    <div
+                      key={`discard-select-${idx}`}
+                      className="selector-card-item hover-glow"
+                      onClick={() => handleDiscardSelection(idx)}
+                    >
+                      <Card card={{ ...c, PV: c.pv }} isMini={true} />
+                      <div className="card-label">Défausser</div>
+                    </div>
+                  );
+                })
+              ) : (
+                self.graveyard
+                  .filter((c) => c.type === "Être")
+                  .map((c, idx) => (
+                    <div
+                      key={`graveyard-select-${idx}`}
+                      className="selector-card-item hover-glow"
+                      onClick={() => handleGraveyardSelection(c)}
+                    >
+                      <Card card={{ ...c, PV: c.pv }} isMini={true} />
+                      <div className="card-label">Réinvoquer</div>
+                    </div>
+                  ))
+              )}
+            </div>
+            <div className="selector-actions">
+              <button
+                className="selector-cancel-btn"
+                onClick={() => setEffectTargetingFlow(null)}
               >
                 Annuler
               </button>
@@ -453,7 +577,7 @@ const GameTable = ({ user, gameState, sendAction }) => {
                       <button
                         className="action-btn play-btn"
                         disabled={!canAfford}
-                        onClick={() => executeHandAction("SUMMON_BEING", index)}
+                        onClick={() => handlePlayOrSummonClick("SUMMON_BEING", index)}
                       >
                         Invoquer
                       </button>
@@ -462,7 +586,7 @@ const GameTable = ({ user, gameState, sendAction }) => {
                       <button
                         className="action-btn play-btn"
                         disabled={!canAfford}
-                        onClick={() => executeHandAction("PLAY_SUPPORT", index)}
+                        onClick={() => handlePlayOrSummonClick("PLAY_SUPPORT", index)}
                       >
                         Jouer Sort
                       </button>

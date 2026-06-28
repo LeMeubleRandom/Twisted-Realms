@@ -948,3 +948,102 @@
   border-color: #ff5555;
   box-shadow: 0 0 10px rgba(255, 85, 85, 0.3);
 }
+
+.effect-selector-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(11, 7, 30, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.effect-selector-card {
+  background: linear-gradient(135deg, #1b1341, #120d2d);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 800px;
+  width: 90%;
+  text-align: center;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.5),
+    var(--glow-primary);
+  animation: scaleIn 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.effect-selector-card h3 {
+  margin: 0 0 1.5rem 0;
+  color: #ff007f;
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
+}
+
+.selector-cards-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding: 1rem 0.5rem;
+  margin-bottom: 2rem;
+  min-height: 220px;
+}
+
+.selector-card-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  position: relative;
+}
+
+.selector-card-item:hover {
+  transform: translateY(-8px);
+}
+
+.selector-card-item .card-label {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #00ffaa;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(0, 255, 170, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 255, 170, 0.3);
+}
+
+.selector-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.selector-cancel-btn {
+  background: rgba(255, 255, 255, 0.08);
+  color: #b5a9df;
+  border: 1px solid rgba(181, 169, 223, 0.2);
+  padding: 0.6rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+
+.selector-cancel-btn:hover {
+  background: rgba(255, 85, 85, 0.15);
+  color: #ff5555;
+  border-color: rgba(255, 85, 85, 0.4);
+  box-shadow: 0 0 10px rgba(255, 85, 85, 0.2);
+}
