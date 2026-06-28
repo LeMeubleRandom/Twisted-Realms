@@ -264,6 +264,10 @@ export default class GameController {
       const gameDetails = await Game.findById(gameId);
       if (gameDetails) {
         if (Number(gameDetails.player1Id) === Number(userId)) {
+          if (gameDetails.player2Id) {
+            await User.setGameId(gameDetails.player2Id, null);
+            await User.setInGame(gameDetails.player2Id, false);
+          }
           await Game.deleteGame(gameId);
           GameManager.endGame(Number(gameId));
         } else {

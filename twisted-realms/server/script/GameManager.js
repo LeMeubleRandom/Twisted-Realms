@@ -43,48 +43,69 @@ class GameManager {
         break;
       case "SUMMON_BEING": {
         if (game.phase !== "MainPhase1") {
-          return { error: "Vous ne pouvez invoquer des êtres que durant la Main Phase." };
+          return {
+            error:
+              "Vous ne pouvez invoquer des êtres que durant la Main Phase.",
+          };
         }
         const { cardHandIndex } = payload;
         const success = activePlayer.summonBeing(cardHandIndex);
         if (!success) {
-          return { error: "Invocation impossible (compteurs d'accélérateur insuffisants ou zone pleine)." };
+          return {
+            error:
+              "Invocation impossible (compteurs d'accélérateur insuffisants ou zone pleine).",
+          };
         }
         break;
       }
       case "USE_ACCELERATOR": {
         if (game.phase !== "MainPhase1") {
-          return { error: "Vous ne pouvez charger des accélérateurs que durant la Main Phase." };
+          return {
+            error:
+              "Vous ne pouvez charger des accélérateurs que durant la Main Phase.",
+          };
         }
         const { cardHandIndex } = payload;
         const success = activePlayer.useAsAccelerator(cardHandIndex);
         if (!success) {
-          return { error: "Impossible d'utiliser cette carte comme accélérateur." };
+          return {
+            error: "Impossible d'utiliser cette carte comme accélérateur.",
+          };
         }
         break;
       }
       case "PLAY_SUPPORT": {
         if (game.phase !== "MainPhase1") {
-          return { error: "Vous ne pouvez jouer des cartes soutiens/sorts que durant la Main Phase." };
+          return {
+            error:
+              "Vous ne pouvez jouer des cartes soutiens/sorts que durant la Main Phase.",
+          };
         }
         const { cardHandIndex } = payload;
         const success = activePlayer.playSupport(cardHandIndex);
         if (!success) {
-          return { error: "Impossible de jouer ce soutien (compteurs d'accélérateur insuffisants ou zone pleine)." };
+          return {
+            error:
+              "Impossible de jouer ce soutien (compteurs d'accélérateur insuffisants ou zone pleine).",
+          };
         }
         break;
       }
       case "ATTACK": {
         if (game.phase !== "BattlePhase") {
-          return { error: "Vous ne pouvez attaquer que durant la Battle Phase." };
+          return {
+            error: "Vous ne pouvez attaquer que durant la Battle Phase.",
+          };
         }
         const { attackerIndex, targetIndex } = payload;
         await game.resolveAttack(attackerIndex, targetIndex);
         break;
       }
       case "SURRENDER": {
-        const playerKey = Number(game.players.p1.id) === Number(playerId) ? "p1" : "p2";
+        const playerKey =
+          Number(game.players.p1.id) === Number(playerId) ? "p1" : "p2";
         game.players[playerKey].pv = 0;
+        game.players[playerKey].surrend = true;
         console.log(`${game.players[playerKey].name} a abandonné la partie.`);
         break;
       }
@@ -92,18 +113,30 @@ class GameManager {
         return { error: "Action inconnue" };
     }
 
-    const p1Hand = game.players.p1.hand.map(c => c.id);
-    const p2Hand = game.players.p2.hand.map(c => c.id);
-    const p1DeckOrder = game.players.p1.deck.map(c => c.id);
-    const p2DeckOrder = game.players.p2.deck.map(c => c.id);
-    await GameModel.updateGameState(gameId, p1Hand, p2Hand, p1DeckOrder, p2DeckOrder);
+    const p1Hand = game.players.p1.hand.map((c) => c.id);
+    const p2Hand = game.players.p2.hand.map((c) => c.id);
+    const p1DeckOrder = game.players.p1.deck.map((c) => c.id);
+    const p2DeckOrder = game.players.p2.deck.map((c) => c.id);
+    await GameModel.updateGameState(
+      gameId,
+      p1Hand,
+      p2Hand,
+      p1DeckOrder,
+      p2DeckOrder,
+    );
 
     const gameOverStatus = game.checkGameOver();
     if (gameOverStatus) {
       const winnerId = game.players[gameOverStatus.winner].id;
       const loserId = game.players[gameOverStatus.loser].id;
+      const hasSurrend = game.players[gameOverStatus.loser].surrend;
 
-      await GameModel.endGameAndDistributeRewards(gameId, winnerId, loserId);
+      await GameModel.endGameAndDistributeRewards(
+        gameId,
+        winnerId,
+        loserId,
+        hasSurrend,
+      );
 
       this.endGame(gameId);
     }

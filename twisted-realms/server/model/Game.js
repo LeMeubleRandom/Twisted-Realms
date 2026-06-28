@@ -18,7 +18,13 @@ export default class Game {
     return result;
   }
 
-  static async updateGameState(gameId, p1Hand, p2Hand, p1DeckOrder, p2DeckOrder) {
+  static async updateGameState(
+    gameId,
+    p1Hand,
+    p2Hand,
+    p1DeckOrder,
+    p2DeckOrder,
+  ) {
     const [result] = await pool.execute(
       "UPDATE game SET player1Hand = ?, player2Hand = ?, player1DeckOrder = ?, player2DeckOrder = ? WHERE gameId = ?",
       [
@@ -27,7 +33,7 @@ export default class Game {
         JSON.stringify(p1DeckOrder),
         JSON.stringify(p2DeckOrder),
         gameId,
-      ]
+      ],
     );
     return result;
   }
@@ -96,18 +102,30 @@ export default class Game {
     return result;
   }
 
-  static async endGameAndDistributeRewards(gameId, winnerId, loserId) {
+  static async endGameAndDistributeRewards(
+    gameId,
+    winnerId,
+    loserId,
+    hasSurrend,
+  ) {
     if (winnerId) {
       await pool.execute(
         "UPDATE user SET credits = credits + 100, inGame = 0, gameId = NULL WHERE id = ?",
-        [winnerId]
+        [winnerId],
       );
     }
     if (loserId) {
-      await pool.execute(
-        "UPDATE user SET credits = credits + 20, inGame = 0, gameId = NULL WHERE id = ?",
-        [loserId]
-      );
+      if (!hasSurrend) {
+        await pool.execute(
+          "UPDATE user SET credits = credits + 20, inGame = 0, gameId = NULL WHERE id = ?",
+          [loserId],
+        );
+      } else {
+        await pool.execute(
+          "UPDATE user SET inGame = 0, gameId = NULL WHERE id = ?",
+          [loserId],
+        );
+      }
     }
     await pool.execute("DELETE FROM game WHERE gameId = ?", [gameId]);
   }

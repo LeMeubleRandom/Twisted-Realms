@@ -50,6 +50,10 @@ function Home({ user }) {
     }
   };
 
+  const redirect = async (e) => {
+    navigate("/profile");
+  };
+
   useEffect(() => {
     fetchCards();
   }, []);
@@ -78,6 +82,7 @@ function Home({ user }) {
               onError={(e) => {
                 e.target.src = avatarImg;
               }}
+              onClick={redirect}
             />
           </article>
           <button className="home-btn" onClick={enterLobby}>

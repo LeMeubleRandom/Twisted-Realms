@@ -22,6 +22,7 @@ const GameTable = ({ user, gameState, sendAction }) => {
   const [isRightBarOpen, setIsRightBarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [showSurrender, setShowSurrender] = useState(false);
+  const [hasSurrend, setHasSurrend] = useState("Vous gagnez 20 crédits");
 
   useEffect(() => {
     const handleResize = () => {
@@ -79,6 +80,7 @@ const GameTable = ({ user, gameState, sendAction }) => {
   const handleSurrender = () => {
     sendAction("SURRENDER", {});
     setShowSurrender(false);
+    setHasSurrend("Vous gagnez 0 crédit");
   };
 
   if (gameState.gameState === "Finished" || gameState.isOver) {
@@ -90,9 +92,7 @@ const GameTable = ({ user, gameState, sendAction }) => {
             {isWinner ? "VICTOIRE !" : "DÉFAITE..."}
           </h1>
           <p className="rewards-text">
-            {isWinner
-              ? "Félicitations ! Vous gagnez 100 crédits."
-              : "Bien tenté. Vous gagnez 20 crédits."}
+            {isWinner ? "Vous gagnez 100 crédits" : hasSurrend}
           </p>
           <button
             className="lobby-redirect-btn"

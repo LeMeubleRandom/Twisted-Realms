@@ -24,6 +24,7 @@ export default class Player {
     this.maxHandSize = 7;
 
     this.startingCard = mainCardData ? new Card(mainCardData) : null;
+    this.surrend = false;
   }
 
   shuffle() {
@@ -84,7 +85,7 @@ export default class Player {
     if (cardHandIndex < 0 || cardHandIndex >= this.hand.length) return false;
     const card = this.hand[cardHandIndex];
 
-    const activeBeings = this.mainZone.filter(c => c !== null);
+    const activeBeings = this.mainZone.filter((c) => c !== null);
     if (
       card.type !== "Être" ||
       this.acceleratorCounters < card.cost ||
@@ -117,7 +118,7 @@ export default class Player {
     if (cardHandIndex < 0 || cardHandIndex >= this.hand.length) return false;
     const card = this.hand[cardHandIndex];
 
-    const activeSpells = this.spellZone.filter(c => c !== null);
+    const activeSpells = this.spellZone.filter((c) => c !== null);
     if (
       (card.type !== "Soutien" && card.type !== "Sort") ||
       this.acceleratorCounters < card.cost ||
