@@ -235,6 +235,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 2rem;
+  padding: 0.2rem 0.6rem;
 }
 
 .deck-back-btn:hover {
@@ -249,6 +251,7 @@
   color: var(--text);
   font-size: 1.6rem;
   margin: 2rem 0;
+  padding-left: 0.4rem;
   max-width: 20rem;
   box-sizing: border-box;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
