@@ -181,6 +181,14 @@
   --main-accent-color: #f0fdfe;
 }
 
+.faction-aucune {
+  --border-color: #0c3a2b;
+  --bg-color: #164e3f;
+  --bg-dark-color: #0d2821;
+  --accent-color: #52e5a4;
+  --main-accent-color: #f0fdf4;
+}
+
 .card-container.mini {
   pointer-events: none;
   transform: none !important;
