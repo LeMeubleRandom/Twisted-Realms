@@ -96,7 +96,6 @@
 
 .shop-tab.recommended:hover {
   box-shadow: 0 0 10px rgba(214, 0, 110, 0.3);
-  border-color: linear-gradient(135deg, #be00be, #eb007a);
 }
 
 .shop-tab.active {

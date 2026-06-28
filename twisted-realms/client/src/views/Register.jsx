@@ -9,6 +9,7 @@ function Register({ setUser }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
 
   const navigate = useNavigate();
 
@@ -33,6 +34,12 @@ function Register({ setUser }) {
       }
     } catch (error) {
       console.error("Erreur de connexion au serveur :", error);
+    }
+  };
+
+  const confirmPassword = async (e) => {
+    if (e != password) {
+      setPasswordError("Le mot de passe ne correspond pas");
     }
   };
 
@@ -75,6 +82,18 @@ function Register({ setUser }) {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+
+            <input
+              type="password"
+              name="confirmPassword"
+              className="register-form-input"
+              id="register-form-password"
+              placeholder="Entrez-le de nouveau"
+              onChange={(e) => {
+                confirmPassword(e.target.value);
+              }}
+            />
+            {passwordError && <div className="error">{passwordError}</div>}
 
             <div className="register-btns">
               <button
