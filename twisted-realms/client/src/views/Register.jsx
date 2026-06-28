@@ -17,6 +17,15 @@ function Register({ setUser }) {
     e.preventDefault();
     setError(null);
 
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      setError(
+        "Le mot de passe doit contenir au moins 8 caractères, dont une majuscule, une minuscule, un chiffre et un caractère spécial",
+      );
+      return;
+    }
+
     try {
       const response = await fetch("/api/user/register", {
         method: "POST",
