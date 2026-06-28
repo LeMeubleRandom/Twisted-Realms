@@ -498,6 +498,7 @@
     width: calc(100% - 3rem);
     max-width: 100%;
     padding: 1rem;
+    z-index: 998;
   }
 
   .deck-label-container {
