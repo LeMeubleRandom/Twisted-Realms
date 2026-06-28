@@ -475,8 +475,12 @@
     gap: 0.5rem;
   }
 
+  .deck-name-input-wrapper {
+    margin: 0.8rem 1rem 0 0;
+  }
+
   #deck-name {
-    margin: 1.5rem 2rem 0.5rem 2rem;
+    margin: 0;
     max-width: calc(100% - 4rem);
     width: 100%;
   }

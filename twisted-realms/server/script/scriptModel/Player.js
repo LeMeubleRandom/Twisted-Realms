@@ -15,8 +15,8 @@ export default class Player {
 
     this.graveyard = [];
     this.ostrac = [];
-    this.mainZone = [];
-    this.spellZone = [];
+    this.mainZone = Array(5).fill(null);
+    this.spellZone = Array(3).fill(null);
     this.field = [];
 
     this.phase = null;
@@ -76,17 +76,29 @@ export default class Player {
     if (cardHandIndex < 0 || cardHandIndex >= this.hand.length) return false;
     const card = this.hand[cardHandIndex];
 
+    const activeBeings = this.mainZone.filter(c => c !== null);
     if (
       card.type !== "Être" ||
       this.acceleratorCounters < card.cost ||
-      this.mainZone.length >= 5
+      activeBeings.length >= 5
     ) {
       return false;
     }
 
+    const searchOrder = [2, 1, 3, 0, 4];
+    let targetSlot = -1;
+    for (const i of searchOrder) {
+      if (this.mainZone[i] === null) {
+        targetSlot = i;
+        break;
+      }
+    }
+
+    if (targetSlot === -1) return false;
+
     this.acceleratorCounters -= card.cost;
     this.hand.splice(cardHandIndex, 1);
-    this.mainZone.push(card);
+    this.mainZone[targetSlot] = card;
     console.log(
       `${this.name} déploie l'être ${card.name}. Compteurs restants : ${this.acceleratorCounters}`,
     );
@@ -97,17 +109,29 @@ export default class Player {
     if (cardHandIndex < 0 || cardHandIndex >= this.hand.length) return false;
     const card = this.hand[cardHandIndex];
 
+    const activeSpells = this.spellZone.filter(c => c !== null);
     if (
       (card.type !== "Soutien" && card.type !== "Sort") ||
       this.acceleratorCounters < card.cost ||
-      this.spellZone.length >= 3
+      activeSpells.length >= 3
     ) {
       return false;
     }
 
+    const searchOrder = [1, 0, 2];
+    let targetSlot = -1;
+    for (const i of searchOrder) {
+      if (this.spellZone[i] === null) {
+        targetSlot = i;
+        break;
+      }
+    }
+
+    if (targetSlot === -1) return false;
+
     this.acceleratorCounters -= card.cost;
     this.hand.splice(cardHandIndex, 1);
-    this.spellZone.push(card);
+    this.spellZone[targetSlot] = card;
     console.log(
       `${this.name} joue le soutien ${card.name}. Compteurs restants : ${this.acceleratorCounters}`,
     );

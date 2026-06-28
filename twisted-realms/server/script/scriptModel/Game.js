@@ -149,20 +149,29 @@ export default class Game {
         `${attackingCard.name} (ATK: ${attackingCard.atk}) attaque ${defendingCard.name} (ATK/PV: ${defendingCard.atk}/${defendingCard.currentPv})`,
       );
 
-      if (attackingCard.atk > defendingCard.currentPv) {
-        opponent.mainZone.splice(targetIndex, 1);
+      const damageToDefender = Math.floor(attackingCard.atk / 100);
+      const damageToAttacker = Math.floor(defendingCard.atk / 100);
+
+      defendingCard.currentPv -= damageToDefender;
+      attackingCard.currentPv -= damageToAttacker;
+
+      console.log(
+        `${attackingCard.name} inflige ${damageToDefender} dégâts à ${defendingCard.name}.`
+      );
+      console.log(
+        `${defendingCard.name} inflige ${damageToAttacker} dégâts à ${attackingCard.name}.`
+      );
+
+      if (defendingCard.currentPv <= 0) {
+        opponent.mainZone[targetIndex] = null;
         opponent.graveyard.push(defendingCard);
         console.log(`${defendingCard.name} est détruite.`);
-      } else if (attackingCard.atk < defendingCard.currentPv) {
-        attacker.mainZone.splice(attackerIndex, 1);
+      }
+
+      if (attackingCard.currentPv <= 0) {
+        attacker.mainZone[attackerIndex] = null;
         attacker.graveyard.push(attackingCard);
-        console.log(`${attackingCard.name} s'écrase et est détruite.`);
-      } else {
-        attacker.mainZone.splice(attackerIndex, 1);
-        opponent.mainZone.splice(targetIndex, 1);
-        attacker.graveyard.push(attackingCard);
-        opponent.graveyard.push(defendingCard);
-        console.log("Les deux créatures s'entretuent !");
+        console.log(`${attackingCard.name} est détruite.`);
       }
     }
     attackingCard.hasAttacked = true;

@@ -48,6 +48,15 @@ le terrain ( composition du terrain
     Zone des cartes non combattantes -> 3 zones disponibles
 )
 
+Règles pour les pv d'une carte :
+
+Une carte possède des pv, cela peut être 1, 2, 3 etc...
+Lorsqu'une carte tombe à 0 PV, elle meurt
+Pour infliger des dégats à une carte on doit l'attaquer avec une carte
+1 dégats à une créature correspond à 1 centaine de points d'attaque
+cela veut dire qu'une créature qui attaque à 250 va infliger 2 blessures à une autre
+les créatures qui subissent des attaquent infligent aussi des dégats aux créatures attaquantes
+
 -- -----------------------------------------------------------------------------
 
 jeu :
