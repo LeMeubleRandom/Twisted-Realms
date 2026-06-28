@@ -111,6 +111,10 @@
   border-radius: 0.2rem;
 }
 
+.faction-aucune .card-effect {
+  margin: 0 3% 3% 3%;
+}
+
 .card-effect span {
   font-size: 70%;
   margin: 0 5%;

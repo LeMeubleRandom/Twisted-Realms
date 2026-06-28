@@ -25,6 +25,7 @@ router.get("/me", verifyToken, UserController.getMe);
 router.get("/deck", verifyToken, UserController.getAllDecksByUserId);
 //router.get("/decks", verifyToken, UserController.getDeck);
 router.get("/collection", verifyToken, UserController.getCollection);
+router.post("/collection/favorite", verifyToken, UserController.toggleFavorite);
 router.get("/:userId", UserController.getUserById);
 
 router.delete(

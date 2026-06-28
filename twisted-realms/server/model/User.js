@@ -186,4 +186,33 @@ export default class User {
     );
     return user;
   }
+
+  static async toggleFavorite(userId, cardId) {
+    let collection = await this.getCollection(userId);
+    if (!collection) {
+      await pool.execute(
+        "INSERT INTO userCollection (userId, cardCollection, quantity, favorite) VALUES (?, '[]', '[]', '[]')",
+        [userId],
+      );
+      collection = await this.getCollection(userId);
+    }
+
+    let favorite = collection.favorite || [];
+    if (typeof favorite === "string") {
+      favorite = JSON.parse(favorite);
+    }
+
+    const index = favorite.indexOf(cardId);
+    if (index !== -1) {
+      favorite.splice(index, 1);
+    } else {
+      favorite.push(cardId);
+    }
+
+    await pool.execute(
+      "UPDATE userCollection SET favorite = ? WHERE userId = ?",
+      [JSON.stringify(favorite), userId],
+    );
+    return favorite;
+  }
 }

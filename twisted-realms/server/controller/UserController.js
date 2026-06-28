@@ -289,4 +289,22 @@ export default class UserController {
       res.status(400).json({ status: "error", message: error.message });
     }
   }
+
+  static async toggleFavorite(req, res) {
+    try {
+      const userId = req.userId;
+      const { cardId } = req.body;
+      if (cardId === undefined || cardId === null) {
+        return res.status(400).json({ status: "error", message: "cardId est requis" });
+      }
+      const updatedFavorites = await User.toggleFavorite(userId, parseInt(cardId, 10));
+      res.status(200).json({ status: "success", favorite: updatedFavorites });
+    } catch (error) {
+      console.error("Error toggleFavorite:", error);
+      res.status(500).json({
+        status: "error",
+        message: error.message,
+      });
+    }
+  }
 }

@@ -398,3 +398,69 @@
     grid-template-columns: repeat(auto-fill, minmax(5rem, 1fr));
   }
 }
+
+/* Collection Card Footer & Favorites styling */
+.collection-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.75rem;
+  padding: 0.3rem 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.badge-owned {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #a0aec0;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  letter-spacing: 0.02em;
+}
+
+.btn-favorite {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.35);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-radius: 50%;
+  outline: none;
+}
+
+.btn-favorite:hover {
+  color: #f1c40f;
+  background: rgba(241, 196, 15, 0.1);
+  transform: scale(1.15);
+}
+
+.btn-favorite:active {
+  transform: scale(0.9);
+}
+
+.btn-favorite.is-fav {
+  color: #f1c40f;
+  filter: drop-shadow(0 0 5px rgba(241, 196, 15, 0.5));
+}
+
+.btn-favorite.is-fav:hover {
+  background: rgba(241, 196, 15, 0.15);
+  transform: scale(1.15);
+}
+
+/* Make favorite button fully interactive and visible even on locked cards */
+.card-wrapper.locked .btn-favorite {
+  filter: none !important;
+  opacity: 0.8 !important;
+}
+
+.card-wrapper.locked .btn-favorite:hover {
+  opacity: 1 !important;
+}

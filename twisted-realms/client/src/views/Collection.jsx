@@ -117,6 +117,17 @@ function Collection({ user }) {
     return ["All", ...Array.from(factions)];
   }, [cardList]);
 
+  const favoriteList = useMemo(() => {
+    if (!userCollection || !userCollection.favorite) return [];
+    try {
+      const favs = userCollection.favorite;
+      return Array.isArray(favs) ? favs : JSON.parse(favs);
+    } catch (e) {
+      console.error("Erreur de parsing des favoris :", e);
+      return [];
+    }
+  }, [userCollection]);
+
   const filteredCollection = useMemo(() => {
     return cardList
       .filter((card) => {
@@ -125,7 +136,7 @@ function Collection({ user }) {
           if (!isOwned) return false;
         }
         if (showOnlyFav) {
-          const isFav = userCollection.favorite.includes(card.id);
+          const isFav = favoriteList.includes(card.id);
           if (!isFav) return false;
         }
 
@@ -143,7 +154,32 @@ function Collection({ user }) {
         return true;
       })
       .sort((a, b) => a.faction.localeCompare(b.faction) || a.cost - b.cost);
-  }, [cardList, selectedFaction, searchQuery, showOnlyOwned, showOnlyFav]);
+  }, [cardList, selectedFaction, searchQuery, showOnlyOwned, showOnlyFav, favoriteList]);
+
+  const handleToggleFavorite = async (cardId) => {
+    try {
+      const response = await fetch("/api/user/collection/favorite", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ cardId }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP : ${response.status}`);
+      }
+      const data = await response.json();
+      if (data.status === "success") {
+        setCollection((prev) => ({
+          ...prev,
+          favorite: data.favorite,
+        }));
+      }
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour des favoris :", error);
+    }
+  };
 
   return (
     <main>
@@ -213,9 +249,30 @@ function Collection({ user }) {
               >
                 <h3 className="card-wrapper-name">{c.name}</h3>
                 <Card card={c} className="card" isMini={false} />
-                <span className="badge-owned" title="Possédé(s)">
-                  Possédé: {qty}
-                </span>
+                <div className="collection-card-footer">
+                  <span className="badge-owned" title="Possédé(s)">
+                    Possédé: {qty}
+                  </span>
+                  <button
+                    type="button"
+                    className={`btn-favorite ${favoriteList.includes(c.id) ? "is-fav" : ""}`}
+                    onClick={() => handleToggleFavorite(c.id)}
+                    title={favoriteList.includes(c.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="16"
+                      height="16"
+                      fill={favoriteList.includes(c.id) ? "#f1c40f" : "none"}
+                      stroke={favoriteList.includes(c.id) ? "#f1c40f" : "currentColor"}
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                  </button>
+                </div>
               </div>
             );
           })}
