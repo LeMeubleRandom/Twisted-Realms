@@ -40,6 +40,8 @@ function Register({ setUser }) {
   const confirmPassword = async (e) => {
     if (e != password) {
       setPasswordError("Le mot de passe ne correspond pas");
+    } else {
+      setPasswordError(null);
     }
   };
 
@@ -50,50 +52,57 @@ function Register({ setUser }) {
           <h1>Bienvenue, nouvel utilisateur</h1>
           {error && <div className="error">{error}</div>}
           <form onSubmit={handleRegister} className="register-form">
-            <input
-              type="text"
-              name="name"
-              className="register-form-input"
-              id="register-form-name"
-              placeholder="Entrez votre Pseudo"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
+            <div className="register-infos-container">
+              <input
+                type="text"
+                name="name"
+                className="register-form-input"
+                id="register-form-name"
+                placeholder="Entrez votre Pseudo"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
 
-            <input
-              type="email"
-              name="email"
-              className="register-form-input"
-              id="register-form-email"
-              placeholder="Entrez un Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+              <input
+                type="email"
+                name="email"
+                className="register-form-input"
+                id="register-form-email"
+                placeholder="Entrez un Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
 
-            <input
-              type="password"
-              name="password"
-              className="register-form-input"
-              id="register-form-password"
-              placeholder="Entrez un mot de passe"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="register-password-container">
+              <input
+                type="password"
+                name="password"
+                className="register-form-input"
+                id="register-form-password"
+                placeholder="Entrez un mot de passe"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
 
-            <input
-              type="password"
-              name="confirmPassword"
-              className="register-form-input"
-              id="register-form-password"
-              placeholder="Entrez-le de nouveau"
-              onChange={(e) => {
-                confirmPassword(e.target.value);
-              }}
-            />
-            {passwordError && <div className="error">{passwordError}</div>}
+              <input
+                type="password"
+                name="confirmPassword"
+                className="register-form-input"
+                id="register-form-password"
+                placeholder="Entrez-le de nouveau"
+                onChange={(e) => {
+                  confirmPassword(e.target.value);
+                }}
+              />
+
+              {passwordError && (
+                <div className="passwordError">{passwordError}</div>
+              )}
+            </div>
 
             <div className="register-btns">
               <button

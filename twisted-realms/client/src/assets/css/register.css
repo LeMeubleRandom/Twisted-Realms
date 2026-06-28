@@ -45,6 +45,15 @@
   transition: border-color 0.3s;
 }
 
+.register-infos-container,
+.register-password-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .register-input:focus {
   border-color: var(--secondary);
 }
@@ -105,6 +114,10 @@
 
 #register-login:active span {
   transform: translate(0, 2px);
+}
+
+.passwordError {
+  margin: 0;
 }
 
 @media (max-width: 768px) {
